@@ -182,9 +182,9 @@ public class Table {
 			if(!(input.substring(input.length()-1).equals(")"))){
 				input = input.substring(0, input.length()-1);
 			}
-			for(int i = 0; i < input.length(i)){
-				if(Character.isLetter(char))
-			}
+//			for(int i = 0; i < input.length(i)){
+//				if(Character.isLetter(charar))
+//			}
 		}
 
 		return input;
