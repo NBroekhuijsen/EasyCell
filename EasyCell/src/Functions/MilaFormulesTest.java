@@ -77,42 +77,42 @@ public class MilaFormulesTest {
 	public void testSumifException() {
 		ArrayList<Object> testlijst1 = new ArrayList<Object>();
 		testlijst1.add(1);
-		assertTrue(MilaFormules.sumif(testlijst1).equals("1"));
+		assertTrue(MilaFormules.sumif(testlijst1).equals("isPositive"));
 	}
 	
 	@Test
 	public void testSign() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(5);
-		assertTrue(MilaFormules.sign(testarli1).equals("1"));
+		assertTrue(MilaFormules.sign(testarli1).equals("isPositive"));
 	}
 	
 	@Test
 	public void testSignMinus() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(-5);
-		assertTrue(MilaFormules.sign(testarli1).equals("-1"));
+		assertTrue(MilaFormules.sign(testarli1).equals("isNegative"));
 	}
 	
 	@Test
 	public void testSignZero() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(0);
-		assertTrue(MilaFormules.sign(testarli1).equals("0"));
+		assertTrue(MilaFormules.sign(testarli1).equals("isZero"));
 	}
 	
 	@Test
 	public void testSignFalse() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(8);
-		assertFalse(MilaFormules.sign(testarli1).equals("-5"));
+		assertFalse(MilaFormules.sign(testarli1).equals("isNegative"));
 	}
 	
 	@Test
 	public void testSignFalse2() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(8);
-		assertFalse(MilaFormules.sign(testarli1).equals("0"));
+		assertFalse(MilaFormules.sign(testarli1).equals("isZero"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -120,14 +120,14 @@ public class MilaFormulesTest {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(1);
 		testarli1.add(2);
-		assertTrue(MilaFormules.sign(testarli1).equals("1"));
+		assertTrue(MilaFormules.sign(testarli1).equals("isPositive"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testSignException() {
+	public void testSignExceptionString() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add("HALLO");
-		assertTrue(MilaFormules.sign(testarli1).equals("1"));
+		assertTrue(MilaFormules.sign(testarli1).equals("isPositive"));
 	}
 	
 	@Test
