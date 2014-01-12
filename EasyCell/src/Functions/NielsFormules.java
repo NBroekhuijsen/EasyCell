@@ -40,18 +40,14 @@ public class NielsFormules {
 		Double maxvalue = (Double) input.get(0);
 		String result = null;
 		for (int i = 0; i < input.size(); i++) {
-			if (!(input.get(i) instanceof Double)) {
-				throw new IllegalArgumentException("Please only enter numbers.");
 
-			} 
-			else {
-				if (maxvalue <= (Double) input.get(i)) {
-					maxvalue = (Double) input.get(i);
-				}
-				result = Double.toString(maxvalue);
-
+			if (maxvalue <= (Double) input.get(i)) {
+				maxvalue = (Double) input.get(i);
 			}
+			result = Double.toString(maxvalue);
+
 		}
+
 		return result;
 	}
 }
