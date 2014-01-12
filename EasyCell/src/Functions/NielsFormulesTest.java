@@ -71,7 +71,7 @@ public class NielsFormulesTest {
 		testlijst.add("hoi");
 		testlijst.add("hoitwo");
 		testlijst.add("hoidrie");
-		assertTrue(NielsFormules.max(testlijst).equals("hoidrie"));
+		assertTrue(NielsFormules.max(testlijst).equals("0"));
 	}
 	
 	@Test
@@ -79,6 +79,15 @@ public class NielsFormulesTest {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add(555.0);
 		assertEquals(NielsFormules.max(testlijst), ("555.0"));
+	}
+	
+	@Test
+	public void testMaxAndString() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(15);
+		testlijst.add("ballon");
+		testlijst.add(20);
+		assertEquals(NielsFormules.max(testlijst), "20");
 	}
 	
 	@Test
