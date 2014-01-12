@@ -1,4 +1,4 @@
-package Formulas;
+package Functions;
 
 import static org.junit.Assert.*;
 

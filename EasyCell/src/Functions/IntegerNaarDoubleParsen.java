@@ -1,4 +1,4 @@
-package Formulas;
+package Functions;
 
 public class IntegerNaarDoubleParsen {
 	

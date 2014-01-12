@@ -1,4 +1,4 @@
-package Formulas;
+package Functions;
 
 import java.util.ArrayList;
 
