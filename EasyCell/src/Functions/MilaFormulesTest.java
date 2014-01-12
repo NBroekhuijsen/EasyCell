@@ -138,21 +138,21 @@ public class MilaFormulesTest {
 	}
 	
 	@Test
-	public void testSqrt() {
+	public void testSqrtFalse() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(5);
 		assertFalse(MilaFormules.sqrt(testarli1.equals("2")));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testSqrt() {
+	public void testSqrtNegative() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(-9);
 		assertFalse(MilaFormules.sqrt(testarli1.equals("2")));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testSqrt() {
+	public void testSqrtMultipleInputs() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(9);
 		testarli1.add(9);
