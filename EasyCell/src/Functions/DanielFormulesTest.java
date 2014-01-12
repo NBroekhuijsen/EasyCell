@@ -34,7 +34,7 @@ public class DanielFormulesTest {
 	
 	@Test
 	public void testNotFalseGeenLogica() {
-		String test = "bla";
+		String test = "3bla";
 		assertTrue(!(DanielFormules.not(test).equals("false")));
 	}
 	
