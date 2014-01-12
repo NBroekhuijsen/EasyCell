@@ -136,7 +136,11 @@ public class MilaFormules {
 		{
 			throw new IllegalArgumentException("Please select a cell containing a number");
 		}
-		else 
+		if((double)input.get(0) < 0)
+		{
+			throw new IllegalArgumentException("Please select a number greater than or equal to zero");
+		}
+		else
 		{
 			if((input.get(0) instanceof Integer || input.get(0) instanceof Double) && input.size() == 1)
 			{
