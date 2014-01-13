@@ -9,82 +9,129 @@ import org.junit.Test;
 public class MilaFormulesTest {
 	
 	@Test
-	public void testSum() {
-		
-		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(1);
-		testarli1.add(2);
-		testarli1.add(3);
-		testarli1.add(4);
-		
-		ArrayList<Object> testarli2 = new ArrayList<Object>();	
-		testarli1.add(2);
-		testarli1.add(2);
-		testarli1.add(2);
-		testarli1.add(5);
-		testarli1.add(5);
-		
-		ArrayList<Object> testlijst1 = new ArrayList<Object>();
-		testlijst1.add("blabla");
-		testlijst1.add(2);
-		
-		ArrayList<Object> testlijst2 = new ArrayList<Object>();
-		testlijst2.add("blabla");
-		
-		assertEquals("10.0", MilaFormules.sum(testarli1));
-		assertEquals("16.0", MilaFormules.sum(testarli2));
-		assertNotSame("100.0", MilaFormules.sum(testarli1));
-		assertNotSame("15.0", MilaFormules.sum(testarli2));
-		assertTrue(MilaFormules.sum(testlijst1).equals("2"));
-		assertTrue(MilaFormules.sum(testlijst2).equals("0"));
+	public void testSumIntegers() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(1.0);
+		testlijst.add(2.0);
+		testlijst.add(3.0);
+		assertEquals(MilaFormules.sum(testlijst), "6.0");
 	}
 	
+	@Test
+	public void testSumDoubles() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(8.8);
+		testlijst.add(2.5);
+		assertEquals(MilaFormules.sum(testlijst), "11.3");
+	}
 	
 	@Test
-	public void testSumif() {
-		
-		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(1);
-		testarli1.add(2);
-		testarli1.add(3);
-		testarli1.add(4);
-		
-		ArrayList<Object> testarli2 = new ArrayList<Object>();	
-		testarli1.add(2);
-		testarli1.add(2);
-		testarli1.add(2);
-		testarli1.add(5);
-		testarli1.add(5);
-		
-		ArrayList<Object> testlijst1 = new ArrayList<Object>();
-		testlijst1.add(2);
-		testlijst1.add("blabla");
-		testlijst1.add(2);
-		
-		ArrayList<Object> testlijst2 = new ArrayList<Object>();
-		testlijst2.add(1);
-		testlijst2.add("blabla");
-		
-		assertEquals("0.0", MilaFormules.sumif(testarli1));
-		assertEquals("4.0", MilaFormules.sumif(testarli2));
-		assertNotSame("100.0", MilaFormules.sumif(testarli1));
-		assertNotSame("15.0", MilaFormules.sumif(testarli2));
-		assertTrue(MilaFormules.sumif(testlijst1).equals("1"));
-		assertTrue(MilaFormules.sumif(testlijst2).equals("0"));
+	public void testSumFalse() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(3.0);
+		testlijst.add(3.0);
+		testlijst.add(3.0);
+		assertFalse(MilaFormules.sum(testlijst).equals("6.0"));
+	}
+	
+	@Test
+	public void testSumWithStrings() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(3.0);
+		testlijst.add("hallo");
+		testlijst.add(3.0);
+		assertTrue(MilaFormules.sum(testlijst).equals("6.0"));
+	}
+	
+	@Test
+	public void testSumWithOnlyStrings() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("hallo");
+		testlijst.add("hallo");
+		assertTrue(MilaFormules.sum(testlijst).equals("0.0"));
+	}
+	
+	@Test
+	public void testSumIfDoubles() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(2.0);
+		testlijst.add(2.0);
+		testlijst.add(3.0);
+		testlijst.add(4.0);
+		testlijst.add(2.0);
+		testlijst.add(2.0);
+		testlijst.add(8.0);
+		testlijst.add(2.1);
+		assertEquals(MilaFormules.sumif(testlijst), "3.0");
+	}
+	
+	@Test
+	public void testSumIfIntegers() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(2);
+		testlijst.add(2);
+		testlijst.add(3);
+		testlijst.add(4);
+		testlijst.add(2);
+		testlijst.add(2);
+		testlijst.add(8);
+		testlijst.add(2);
+		assertEquals(MilaFormules.sumif(testlijst), "3");
+	}
+	
+	@Test
+	public void testSumIfFalse() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(5.0);
+		testlijst.add(2.0);
+		testlijst.add(3.0);
+		testlijst.add(5.0);
+		testlijst.add(2.0);
+		testlijst.add(5.0);
+		testlijst.add(5.1);
+		assertEquals(MilaFormules.sumif(testlijst), "3.0");
+	}
+	
+	@Test
+	public void testSumIfRoundUp() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(5.0);
+		testlijst.add(5.0000);
+		assertEquals(MilaFormules.sumif(testlijst), "0.0");
+	}
+	
+	@Test
+	public void testSumIfWithStrings() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(5.0);
+		testlijst.add(5.0);
+		testlijst.add("hallo");
+		testlijst.add(5.0);
+		testlijst.add("asdf");
+		assertEquals(MilaFormules.sumif(testlijst), "2.0");
+	}
+	
+	@Test
+	public void testSumIfWithStringAsCriteria() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("hallo");
+		testlijst.add(5.0);
+		testlijst.add("hallo");
+		assertEquals(MilaFormules.sumif(testlijst), "0.0");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testSumifException() {
+	public void testSumifOneInput() {
 		ArrayList<Object> testlijst1 = new ArrayList<Object>();
 		testlijst1.add(1);
-		assertTrue(MilaFormules.sumif(testlijst1).equals("isPositive"));
+		assertTrue(MilaFormules.sumif(testlijst1).equals("0.0"));
 	}
 	
 	@Test
 	public void testSign() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(5);
-		assertTrue(MilaFormules.sign(testarli1).equals("isPositive"));
+		assertEquals(MilaFormules.sign(testarli1), "isPositive");
 	}
 	
 	@Test
@@ -134,21 +181,21 @@ public class MilaFormulesTest {
 	public void testSqrt() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(9);
-		assertTrue(MilaFormules.sqrt(testarli1.equals("3")));
+		assertTrue(MilaFormules.sqrt(testarli1).equals("3"));
 	}
 	
 	@Test
 	public void testSqrtFalse() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(5);
-		assertFalse(MilaFormules.sqrt(testarli1.equals("2")));
+		assertFalse(MilaFormules.sqrt(testarli1).equals("2"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testSqrtNegative() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(-9);
-		assertFalse(MilaFormules.sqrt(testarli1.equals("2")));
+		assertFalse(MilaFormules.sqrt(testarli1).equals("2"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
