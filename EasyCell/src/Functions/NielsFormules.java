@@ -50,4 +50,21 @@ public class NielsFormules {
 
 		return result;
 	}
+	public static String min(ArrayList<Object> input) {
+		Double maxvalue = (double) 0;
+		String result = null;
+		for (int i = 0; i < input.size(); i++) {
+
+			if (maxvalue >= (Double) input.get(i)) {
+				maxvalue = (Double) input.get(i);
+			}
+			result = Double.toString(maxvalue);
+
+		}
+
+		return result;
+	}
+	
+	
+
 }
