@@ -45,7 +45,7 @@ public class JuliantiFormules {
 		if(input.get(0) instanceof String)
 		{
 			String inputstring = (String) input.get(0);
-			if(inputstring.matches("true")|| inputstring.matches("TRUE") || inputstring.matches("True") || inputstring.matches("false") || inputstring.matches("False") || inputstring.matches("FALSE"))
+			if(inputstring.equalsIgnoreCase("true")||inputstring.equalsIgnoreCase("false"))
 			{
 				return "true";
 			}
@@ -64,13 +64,10 @@ public class JuliantiFormules {
 		{
 			throw new IllegalArgumentException("Please select a cell containing a number.");
 		}
-		if(input.get(0) instanceof Double)
+		double inputdouble = (double) input.get(0);
+		if(inputdouble%2 == 0)
 		{
-			double inputdouble = (double) input.get(0);
-			if(inputdouble%2 == 0)
-			{
-				return "true";
-			}
+			return "true";
 		}
 		return "false";
 	}

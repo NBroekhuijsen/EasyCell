@@ -29,11 +29,20 @@ public class JuliantiFormulesTest {
 		assertTrue(JuliantiFormules.intFunction(testlijst).equals("123.0"));
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test (expected = IllegalArgumentException.class)
 	public void testintFunctionWithString() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("hola que tal");
-		assertEquals(JuliantiFormules.intFunction(testlijst), "hola que tal");
+		JuliantiFormules.intFunction(testlijst);
+		assertTrue(JuliantiFormules.intFunction(testlijst).equals("hola que tal"));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testintFunctionWithMultipleInputs() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(123);
+		testlijst.add(123);
+		assertTrue(JuliantiFormules.intFunction(testlijst).equals("gefeliciteerd je weet niet hoe excel werkt"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -111,6 +120,13 @@ public class JuliantiFormulesTest {
 
 	@Test
 	public void testisnumber() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(5.5);
+		assertEquals(JuliantiFormules.isnumber(testlijst), "true");
+	}
+	
+	@Test
+	public void testisnumberWithInt() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add(5.0);
 		assertEquals(JuliantiFormules.isnumber(testlijst), "true");
