@@ -7,10 +7,14 @@ public class EYcel_Model {
     private static final String INITIAL_VALUE = "0";
     
     private BigInteger m_total;
+    
+    private EYcel_Table m_table = XMLParser.readXML("/Users/remkoleene/Desktop/2x2xml.xml");
+    
+    private EYcel_View m_view;
 
     public Object[][] BGtable = {
-                {1, 2, 3, 4, 5, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
+                {m_table.getContent(1,1), m_table.getContent(1,2), null, null, null, null, null, null, null},
+                {m_table.getContent(2,1), m_table.getContent(2,2), null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
@@ -50,12 +54,11 @@ public class EYcel_Model {
     //constructor
     EYcel_Model() {
         reset();
-        refresh();
     }
     
     public void refresh() {
     BGtable = new Object[][] {
-                {null, null, null, null, null, null, null, null, null},
+                {"blah" , 3, 4, 4, null, 5, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
