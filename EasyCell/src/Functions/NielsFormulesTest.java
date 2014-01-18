@@ -43,8 +43,8 @@ public class NielsFormulesTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void testLower() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
-		testlijst.add("42.42");
-		assertTrue(NielsFormules.lower(testlijst).equals("42.42"));
+		testlijst.add(42.42);
+		assertTrue(NielsFormules.lower(testlijst).equals(42.42));
 	}
 	
 	@Test
