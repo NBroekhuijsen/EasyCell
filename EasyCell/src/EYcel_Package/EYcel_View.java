@@ -53,7 +53,7 @@ class EYcel_View extends javax.swing.JFrame {
         jMenuItem2.addActionListener(cal);
     }
     
-    void addCopyListener(ActionListener cal) {
+    void addRefreshListener(ActionListener cal) {
         jMenuItem3.addActionListener(cal);
     }
     
@@ -107,7 +107,7 @@ class EYcel_View extends javax.swing.JFrame {
         jMenuItem2.setText("jMenuItem2");
         jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("jMenuItem3");
+        jMenuItem3.setText("REFRESH");
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("jMenuItem4");
