@@ -37,7 +37,7 @@ public class NielsFormules {
 	}
 
 	public static String max(ArrayList<Object> input) {
-		Double maxvalue = (double) 0;
+		double maxvalue = 0.0;
 		String result = null;
 		for (int i = 0; i < input.size(); i++) {
 
