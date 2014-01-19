@@ -146,4 +146,47 @@ public class JuliantiFormulesTest {
 		testlijst.add(2);
 		assertEquals(JuliantiFormules.isnumber(testlijst), "false");
 	}
+	
+	@Test
+	public void testMin() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(1.1);
+		testlijst.add(2.2);
+		testlijst.add(3.3);
+		assertEquals(JuliantiFormules.min(testlijst), "1.1");
+	}
+	
+	@Test
+	public void testMinFalse() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(5.5);
+		testlijst.add(4.4);
+		testlijst.add(3.3);
+		assertFalse(JuliantiFormules.min(testlijst).equals("5.5"));
+	}
+	
+	@Test
+	public void testMinStringInput() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("hoi");
+		testlijst.add("hoitwee");
+		testlijst.add("hoidrie");
+		assertEquals(JuliantiFormules.min(testlijst), "0.0");
+	}
+	
+	@Test
+	public void testMinOneInput() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(555.0);
+		assertEquals(JuliantiFormules.min(testlijst), "555.0");
+	}
+	
+	@Test
+	public void testMinAndString() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(555.0);
+		testlijst.add("HELLO I AM STRING");
+		testlijst.add(520.0);
+		assertTrue(JuliantiFormules.min(testlijst).equals("520.0"));
+	}
 }

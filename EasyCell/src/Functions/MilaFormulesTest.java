@@ -9,16 +9,7 @@ import org.junit.Test;
 public class MilaFormulesTest {
 	
 	@Test
-	public void testSumIntegers() {
-		ArrayList<Object> testlijst = new ArrayList<Object>();
-		testlijst.add(1.0);
-		testlijst.add(2.0);
-		testlijst.add(3.0);
-		assertEquals(MilaFormules.sum(testlijst), "6.0");
-	}
-	
-	@Test
-	public void testSumDoubles() {
+	public void testSum() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add(8.8);
 		testlijst.add(2.5);
@@ -62,21 +53,7 @@ public class MilaFormulesTest {
 		testlijst.add(2.0);
 		testlijst.add(8.0);
 		testlijst.add(2.1);
-		assertEquals(MilaFormules.sumif(testlijst), "3.0");
-	}
-	
-	@Test
-	public void testSumIfIntegers() {
-		ArrayList<Object> testlijst = new ArrayList<Object>();
-		testlijst.add(2);
-		testlijst.add(2);
-		testlijst.add(3);
-		testlijst.add(4);
-		testlijst.add(2);
-		testlijst.add(2);
-		testlijst.add(8);
-		testlijst.add(2);
-		assertEquals(MilaFormules.sumif(testlijst), "3");
+		assertEquals(MilaFormules.sumif(testlijst), "6.0");
 	}
 	
 	@Test
@@ -89,7 +66,7 @@ public class MilaFormulesTest {
 		testlijst.add(2.0);
 		testlijst.add(5.0);
 		testlijst.add(5.1);
-		assertEquals(MilaFormules.sumif(testlijst), "3.0");
+		assertFalse(MilaFormules.sumif(testlijst).equals("15.0"));
 	}
 	
 	@Test
@@ -97,7 +74,7 @@ public class MilaFormulesTest {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add(5.0);
 		testlijst.add(5.0000);
-		assertEquals(MilaFormules.sumif(testlijst), "0.0");
+		assertEquals(MilaFormules.sumif(testlijst), "5.0");
 	}
 	
 	@Test
@@ -108,10 +85,10 @@ public class MilaFormulesTest {
 		testlijst.add("hallo");
 		testlijst.add(5.0);
 		testlijst.add("asdf");
-		assertEquals(MilaFormules.sumif(testlijst), "2.0");
+		assertEquals(MilaFormules.sumif(testlijst), "10.0");
 	}
 	
-	@Test
+	@Test (expected = IllegalArgumentException.class)
 	public void testSumIfWithStringAsCriteria() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("hallo");
@@ -123,50 +100,50 @@ public class MilaFormulesTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSumifOneInput() {
 		ArrayList<Object> testlijst1 = new ArrayList<Object>();
-		testlijst1.add(1);
-		assertTrue(MilaFormules.sumif(testlijst1).equals("0.0"));
+		testlijst1.add(1.0);
+		assertTrue(MilaFormules.sumif(testlijst1).equals("1.0"));
 	}
 	
 	@Test
 	public void testSign() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(5);
+		testarli1.add(5.0);
 		assertEquals(MilaFormules.sign(testarli1), "isPositive");
 	}
 	
 	@Test
 	public void testSignMinus() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(-5);
+		testarli1.add(-5.0);
 		assertTrue(MilaFormules.sign(testarli1).equals("isNegative"));
 	}
 	
 	@Test
 	public void testSignZero() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(0);
+		testarli1.add(0.0);
 		assertTrue(MilaFormules.sign(testarli1).equals("isZero"));
 	}
 	
 	@Test
 	public void testSignFalse() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(8);
+		testarli1.add(8.0);
 		assertFalse(MilaFormules.sign(testarli1).equals("isNegative"));
 	}
 	
 	@Test
 	public void testSignFalse2() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(8);
+		testarli1.add(8.0);
 		assertFalse(MilaFormules.sign(testarli1).equals("isZero"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testSignException() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(1);
-		testarli1.add(2);
+		testarli1.add(1.0);
+		testarli1.add(2.0);
 		assertTrue(MilaFormules.sign(testarli1).equals("isPositive"));
 	}
 	
@@ -180,60 +157,60 @@ public class MilaFormulesTest {
 	@Test
 	public void testSqrt() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(9);
-		assertTrue(MilaFormules.sqrt(testarli1).equals("3"));
+		testarli1.add(9.0);
+		assertEquals(MilaFormules.sqrt(testarli1),"3.0");
 	}
 	
 	@Test
 	public void testSqrtFalse() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(5);
-		assertFalse(MilaFormules.sqrt(testarli1).equals("2"));
+		testarli1.add(5.0);
+		assertFalse(MilaFormules.sqrt(testarli1).equals("2.0"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testSqrtNegative() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(-9);
-		assertFalse(MilaFormules.sqrt(testarli1).equals("2"));
+		testarli1.add(-9.0);
+		assertFalse(MilaFormules.sqrt(testarli1).equals("2.0"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testSqrtMultipleInputs() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(9);
-		testarli1.add(9);
+		testarli1.add(9.0);
+		testarli1.add(9.0);
 		assertFalse(MilaFormules.sqrt(testarli1).equals("2"));
 	}
 	
 	@Test
 	public void testRoundup() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(1);
 		testarli1.add(1.555);
+		testarli1.add(1.0);
 		assertTrue(MilaFormules.roundup(testarli1).equals("1.6"));
 	}
 	
 	@Test
 	public void testRoundup2() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(2);
 		testarli1.add(1.555);
+		testarli1.add(2.0);
 		assertTrue(MilaFormules.roundup(testarli1).equals("1.56"));
 	}
 	
 	@Test
 	public void testRoundupFalse() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(0);
 		testarli1.add(1.9);
+		testarli1.add(0.0);
 		assertFalse(MilaFormules.roundup(testarli1).equals("1.9"));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testRoundupMultipleInputs() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(0);
+		testarli1.add(0.0);
 		testarli1.add(1.9);
 		testarli1.add(1.9);
 		assertFalse(MilaFormules.roundup(testarli1).equals("1.9"));
@@ -257,31 +234,31 @@ public class MilaFormulesTest {
 	@Test
 	public void testRounddown() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(1);
 		testarli1.add(1.555);
+		testarli1.add(1.0);
 		assertTrue(MilaFormules.rounddown(testarli1).equals("1.5"));
 	}
 	
 	@Test
 	public void testRounddown2() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(2);
 		testarli1.add(1.555);
+		testarli1.add(2.0);
 		assertTrue(MilaFormules.rounddown(testarli1).equals("1.55"));
 	}
 	
 	@Test
 	public void testRounddownFalse() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(0);
 		testarli1.add(1.9);
+		testarli1.add(0.0);
 		assertFalse(MilaFormules.rounddown(testarli1).equals("1.9"));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testRounddownMultipleInputs() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
-		testarli1.add(0);
+		testarli1.add(0.0);
 		testarli1.add(1.9);
 		testarli1.add(1.9);
 		assertFalse(MilaFormules.rounddown(testarli1).equals("1.9"));

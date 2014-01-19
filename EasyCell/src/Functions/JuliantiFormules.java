@@ -84,4 +84,22 @@ public class JuliantiFormules {
 		}
 		return "false";
 	}
+	
+	public static String min(ArrayList<Object> input) {
+		double minvalue = Double.MAX_VALUE;
+		double inputvalue = 0.0;
+		String result = "0.0";
+		for (int i = 0; i < input.size(); i++) {
+			
+			if(input.get(i) instanceof Double)
+			{
+				inputvalue = (Double) input.get(i);
+				if (inputvalue <= minvalue) {
+					minvalue =  inputvalue;
+				}
+				result = Double.toString(minvalue);
+			}
+		}
+		return result;
+	}
 }
