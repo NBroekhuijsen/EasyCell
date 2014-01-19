@@ -38,7 +38,7 @@ public class RemkoFormulesTest {
 		testlijst.add(1.0);
 		testlijst.add(2.0);
 		testlijst.add(3.0);
-		assertTrue(!(RemkoFormules.average(testlijst).equals("8.0")));
+		assertFalse(RemkoFormules.average(testlijst).equals("8.0"));
 	}
 	
 	@Test
@@ -97,6 +97,13 @@ public class RemkoFormulesTest {
 		testlijst.add(1.0);
 		testlijst.add(2.0);
 		assertEquals(RemkoFormules.counta(testlijst), "2.0");
+	}
+	
+	@Test
+	public void testCountAWithOneValue() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(1.0);
+		assertEquals(RemkoFormules.counta(testlijst), "1.0");
 	}
 	
 	@Test

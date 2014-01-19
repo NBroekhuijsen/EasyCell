@@ -16,6 +16,15 @@ public class DanielFormulesTest {
 		//een value is altijd true, dus zou NOT false moeten geven.
 		assertEquals(DanielFormules.not(testlijst), "false");
 	}
+	
+	@Test
+	public void testnotWithZero() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(0.0);
+		//een value is altijd true, dus zou NOT false moeten geven.
+		assertEquals(DanielFormules.not(testlijst), "true");
+	}
+	
 	@Test
 	public void testNot() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
@@ -52,6 +61,13 @@ public class DanielFormulesTest {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("HALLO");
 		assertFalse(DanielFormules.not(testlijst).equals("false"));
+	}
+	
+	@Test 
+	public void testOrDouble() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(1.0);
+		assertEquals(DanielFormules.or(testlijst), "true");
 	}
 	
 	@Test 
@@ -116,6 +132,22 @@ public class DanielFormulesTest {
 		testlijst.add(3.0);
 		testlijst.add(4.0);
 		assertEquals(DanielFormules.power(testlijst), "81.0");
+	}
+	
+	@Test
+	public void testPowerNegativeBase() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(-3.0);
+		testlijst.add(4.0);
+		assertEquals(DanielFormules.power(testlijst), "81.0");
+	}
+	
+	@Test
+	public void testPowerNegativePower() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(4.0);
+		testlijst.add(-2.0);
+		assertEquals(DanielFormules.power(testlijst), "0.0625");
 	}
 	
 	@Test

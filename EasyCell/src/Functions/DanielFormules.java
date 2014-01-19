@@ -15,6 +15,10 @@ public class DanielFormules {
 		if (input.get(0) instanceof String) {
 			expression = (String) input.get(0);
 		} else if(input.get(0) instanceof Double){
+			if((double) input.get(0) == 0)
+			{
+				return "true";
+			}
 			return "false";
 		}else{
 			throw new IllegalArgumentException("Please use an expression");
@@ -46,10 +50,12 @@ public class DanielFormules {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("JavaScript");
 		for(Object object : input)	{
-			if (expression instanceof String) {
-				expression = (String) object;
-			} else if(object instanceof Double) {
+			if (object instanceof Double) {
+	// ALS ER NULLEN IN STAAN DAN ZIJN DEZE FALSE. DIT MOET ER NOG BIJ KOMEN.
 				return "true";
+			}
+			else if (expression instanceof String) {
+				expression = (String) object;
 			} else{
 				throw new IllegalArgumentException("Please use a number as base");
 			}

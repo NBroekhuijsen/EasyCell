@@ -176,6 +176,13 @@ public class MilaFormulesTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	public void testSqrtString() {
+		ArrayList<Object> testarli1 = new ArrayList<Object>();
+		testarli1.add("wortel waarom werk je niet");
+		assertFalse(MilaFormules.sqrt(testarli1).equals("2.0"));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
 	public void testSqrtMultipleInputs() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
 		testarli1.add(9.0);
@@ -226,6 +233,7 @@ public class MilaFormulesTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void testRoundupStringInput() {
 		ArrayList<Object> testarli1 = new ArrayList<Object>();
+		testarli1.add("hallo ik ben een string");
 		testarli1.add("hallo ik ben een string");
 		assertFalse(MilaFormules.roundup(testarli1).equals("1.9"));
 	}
