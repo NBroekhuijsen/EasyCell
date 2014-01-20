@@ -145,7 +145,63 @@ public class NielsFormulesTest {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add(3.0);
 		testlijst.add(3.0);
-		assertTrue(NielsFormules.mod(testlijst).equals("0.0"));	
+		assertEquals(NielsFormules.mod(testlijst), "0.0");	
+	}
+	
+	@Test
+	public void testModEqualNegativeDivisor() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(3.0);
+		testlijst.add(-3.0);
+		assertEquals(NielsFormules.mod(testlijst), "0.0");	
+	}
+	
+	@Test
+	public void testModEqualNegativeBase() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(-3.0);
+		testlijst.add(3.0);
+		assertEquals(NielsFormules.mod(testlijst), "0.0");	
+	}
+	
+	@Test
+	public void testModEqualBothNegative() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(-3.0);
+		testlijst.add(-3.0);
+		assertEquals(NielsFormules.mod(testlijst), "0.0");	
+	}
+	
+	@Test
+	public void testModNegativeDivisor() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(29.0);
+		testlijst.add(-3.0);
+		assertEquals(NielsFormules.mod(testlijst), "2.0");	
+	}
+	
+	@Test
+	public void testModNegativeBase() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(-29.0);
+		testlijst.add(3.0);
+		assertEquals(NielsFormules.mod(testlijst), "-2.0");	
+	}
+	
+	@Test
+	public void testModBothNegatives() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(-29.0);
+		testlijst.add(-3.0);
+		assertEquals(NielsFormules.mod(testlijst), "-2.0");	
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testModDiviserZero() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(15.0);
+		testlijst.add(0.0);
+		assertEquals(NielsFormules.mod(testlijst), "0.0");	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

@@ -170,7 +170,7 @@ public class RemkoFormulesTest {
 	}
 	
 	@Test
-	public void testCountIfLargerthen() {
+	public void testCountIfLargerthan() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add(">5.0");
 		testlijst.add(2.0);

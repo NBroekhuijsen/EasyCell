@@ -51,8 +51,11 @@ public class DanielFormules {
 		ScriptEngine engine = manager.getEngineByName("JavaScript");
 		for(Object object : input)	{
 			if (object instanceof Double) {
+				if((double) object != 0)
+				{
 	// ALS ER NULLEN IN STAAN DAN ZIJN DEZE FALSE. DIT MOET ER NOG BIJ KOMEN.
-				return "true";
+					return "true";
+				}
 			}
 			else if (expression instanceof String) {
 				expression = (String) object;

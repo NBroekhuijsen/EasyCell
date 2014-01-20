@@ -70,6 +70,41 @@ public class DanielFormulesTest {
 		assertEquals(DanielFormules.or(testlijst), "true");
 	}
 	
+	@Test
+	public void testOrMultipleDoubles() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(0.0);
+		testlijst.add(0.0);
+		testlijst.add(1.0);
+		testlijst.add(0.0);
+		assertEquals(DanielFormules.or(testlijst), "true");
+	}
+	
+	@Test
+	public void testOrZero() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(0.0);
+		assertEquals(DanielFormules.or(testlijst), "false");
+	}
+	
+	@Test
+	public void testOrMultipleZeroes() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(0.0);
+		testlijst.add(0.0);
+		testlijst.add(0.0);
+		assertEquals(DanielFormules.or(testlijst), "false");
+	}
+	
+	@Test
+	public void testOrZeroesWithLogic() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(0.0);
+		testlijst.add("1+1=4");
+		testlijst.add(0.0);
+		assertEquals(DanielFormules.or(testlijst), "false");
+	}
+	
 	@Test 
 	public void testOrOneInput() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
