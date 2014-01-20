@@ -1,38 +1,24 @@
-package EGGcel;
+package MVCNieuw;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.crypto.spec.OAEPParameterSpec;
 import javax.swing.table.AbstractTableModel;
 
-public class EYcel_Model extends AbstractTableModel {
+import EGGcel.Functions;
 
-    private ArrayList<ArrayList<String>> table;
-    
-    
-    private EYcel_View m_view;
-              
-           
-    //constructor
-    EYcel_Model() {
-        table = new ArrayList<ArrayList<String>>();
-    }
-        public void sync(EYcel_Model temp){
-       
-        int ColumnCountM = temp.getSizeCol(temp.getSizeRow());
-        int RowCountM = temp.getSizeRow();
-        
-        for (int y = 0; y > RowCountM; y++){    
-             for (int x = 0; x > ColumnCountM; x++){
-                     temp.setContent(x,y,cellReader(temp.getContent(x,y)));
-                     
-                    }
-                 }
-        }
-
-        /**
+public class Model extends AbstractTableModel {
+	
+	 private ArrayList<ArrayList<String>> table;
+	 
+	 //constructor
+	    Model() {
+	        table = new ArrayList<ArrayList<String>>();
+	    }
+	    
+	    /**
          * Method to get the content from a cell in the table
          * 
          * @param x
@@ -53,7 +39,8 @@ public class EYcel_Model extends AbstractTableModel {
                 } catch (IndexOutOfBoundsException e) {
                         System.out.print("There is no such cell, so: ");
                 }
-                return null;
+                System.out.println(this.getSizeRow() + " " + this.getSizeCol(x) + " " + x + " " + y );
+                return "";
         }
 
         /**
@@ -105,7 +92,8 @@ public class EYcel_Model extends AbstractTableModel {
          */
         public void hasCol(int x, int y) {
                 while (table.get(y).size() <= x) {
-                        table.get(y).add(null);
+                        table.get(y).add("");
+                        
                 }
         }
 
@@ -123,13 +111,12 @@ public class EYcel_Model extends AbstractTableModel {
          *            - number of the row you want the Column amount from
          */
         public int getSizeCol(int x) {
-        	if (x < table.size()) {
-                return table.get(x).size();
-        	} else {
-        		return 0;
+        	if(x > table.size()){
+        		return table.get(x).size();
         	}
+        	return 0;
         }
-
+        
         /**
          * method CellReader
          * 
@@ -637,17 +624,33 @@ public class EYcel_Model extends AbstractTableModel {
 
                 }
         }
+
 		@Override
 		public int getColumnCount() {
-			return this.getSizeCol(0);
-		}
-		@Override
-		public int getRowCount() {
-			return this.getSizeRow();
-		}
-		@Override
-		public Object getValueAt(int x, int y) {
-			return this.getContent(x, y);
+			this.hasCol(1, 1);
+			return this.getSizeCol(1);
 		}
 
+		@Override
+		public int getRowCount() {
+			int a = this.getSizeRow();
+			return this.getSizeRow();
+		}
+
+		@Override
+		public Object getValueAt(int y, int x) {
+			this.getContent(x, y);
+			return null;
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

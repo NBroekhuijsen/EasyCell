@@ -1,3 +1,6 @@
+package MVCNieuw;
+
+
 import java.io.*;
 
 import javax.xml.transform.*;
@@ -13,15 +16,15 @@ import org.xml.sax.*;
 public class XMLParser {
 
 	/**
-	 * Method that reads a XML-file, and returns a Table that contains the
+	 * Method that reads a XML-file, and returns a Model that contains the
 	 * information
 	 * 
 	 * @param file
 	 * @return
 	 */
-	public static Table readXML(String file) {
+	public static Model readXML(String file) {
 		// initialize table to be filled with content of XML file
-		Table t = new Table();
+		Model t = new Model();
 		try {
 			// Create file to be parsed by document parser
 			File xmlfile = new File(file);
@@ -53,13 +56,10 @@ public class XMLParser {
 					// Make the content an Integer (if it is a number), easier
 					// for
 					// using it later on
-					if (checkInt(content)) {
-						Integer.parseInt(content);
-					}
 					// put content in table, with row/column inserted as x/y
-					t.setContent(tablex, tabley, content);
+					t.setContent(tablex, tabley, (String) content);
 				}
-
+				int a = 0;
 			}
 
 		} catch (ParserConfigurationException e) {
@@ -76,11 +76,11 @@ public class XMLParser {
 	 * Writes a table to a XML-file
 	 * 
 	 * @param t
-	 *            - Output Table
+	 *            - Output Model
 	 * @param destination
 	 *            - File Destination
 	 */
-	public static void writeXML(Table t, String destination) {
+	public static void writeXML(Model t, String destination) {
 
 		try {
 			// Create the XML document builder, and document that will be used
@@ -108,8 +108,7 @@ public class XMLParser {
 					}
 					// set content if integer
 					else {
-						cell.appendChild(xmldoc.createTextNode(Integer
-								.toString((int) t.getContent(j, i))));
+						cell.appendChild(xmldoc.createTextNode(t.getContent(j, i)));
 					}
 					// append node to document node
 					Documentnode.appendChild(cell);
