@@ -2,16 +2,20 @@
  * Class to create a Table in which all the information from a XML can be stored
  */
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.crypto.spec.OAEPParameterSpec;
 
 public class Table {
 
-	private ArrayList<ArrayList<Object>> table;
+	private ArrayList<ArrayList<String>> table;
 
 	/**
-	 * Constructor to create the table
+	 * Constructor to create the tabled
 	 */
 	public Table() {
-		table = new ArrayList<ArrayList<Object>>();
+		table = new ArrayList<ArrayList<String>>();
 	}
 
 	/**
@@ -25,10 +29,8 @@ public class Table {
 	 *            that content is to be read from
 	 * @return returns the content of the cell as an Object
 	 */
-	public String getContent(Coor coordinate) {
+	public String getContent(int x, int y) {
 		try {
-			int x = coordinate.getX();
-			int y = coordinate.getY();
 			if (this.getSizeRow() >= x) {
 				if (this.getSizeCol(x) >= y) {
 					return (String) table.get(y).get(x);
@@ -47,7 +49,7 @@ public class Table {
 	 * @param y
 	 * @param content
 	 */
-	public void addContent(int y, Object content) {
+	public void addContent(int y, String content) {
 		this.hasRow(y);
 		table.get(y).add(content);
 	}
@@ -62,7 +64,7 @@ public class Table {
 	 * @param content
 	 *            - Content to be put in the cell
 	 */
-	public void setContent(Coor coordinate, Object content) {
+	public void setContent(Coor coordinate, String content) {
 		this.hasRow(coordinate.getY());
 		this.hasCol(coordinate.getX(), coordinate.getY());
 		table.get(coordinate.getY()).set(coordinate.getX(), content);
@@ -76,7 +78,7 @@ public class Table {
 	 */
 	public void hasRow(int y) {
 		while (table.size() <= y) {
-			table.add(new ArrayList<Object>());
+			table.add(new ArrayList<String>());
 		}
 	}
 
@@ -121,44 +123,52 @@ public class Table {
 	 *         cellcontent
 	 */
 	public String cellReader(String cell) {
+		
+	
+		
 		// trim cell from empty spaces at beginning and ending
 		cell = cell.trim();
 		// String where the content of cell will be kept while being processed
 		// (until become the index)
 		String nwcell;
-		// check if cellcontent starts with "="
-		if (cell.charAt(0) == ('=')) {
-			// cut "=", the remaining will be our index and operations
-			nwcell = cell.replaceFirst("=", "");
-			nwcell = nwcell.trim();
+		
+		try {
+			// check if cellcontent starts with "="
+			if (cell.charAt(0) == ('=')) {
+				// cut "=", the remaining will be our index and operations
+				nwcell = cell.replaceFirst("=", "");
+				nwcell = nwcell.trim();
+	
+				// remove brackets and function
+				String index = functionTrimmer(nwcell);
+				String function = getFunction(nwcell);
+	
+				// Expand index (remove ":" and replace them with "," and the right
+				// indexes, than fetches all the contents and places them in a ArrayList<Object
+//				Should be framed in a huge try catch block
+//				catch: 
+//				catch(IllegalArgumentException e)
+//				{
+//					JOptionPane.showMessageDialog(null, "Error: "+ex.getCause().getMessage());
+//				}
 
-			// remove brackets and function
-			String index = functionTrimmer(nwcell);
-			String function = getFunction(nwcell);
-
-			// Expand index (remove ":" and replace them with "," and the right
-			// indexes
-			ArrayList<Coor> cellIndexes = indexExpander(index);
-
-			// Arraylist for the cellcontent objects
-			ArrayList<Object> result = new ArrayList<Object>();
-
-			// Get the cellcontents and put them into an ArrayList
-			for (Coor nwcoor : cellIndexes) {
-
-				result.add(this.getContent(nwcoor));
+				ArrayList<Object> result = indexExpander(index);
+	
+				// Call the method to perform calculations
+				return callFunction(function, result);
+	
 			}
-
-			// Call the method to perform calculations
-			return callFunction(function, result);
-			// TO DO: RETURN IN THE RIGHT CELL!!
-			// TO DO: IF EXCEPTION THROWN, PUT #ERROR! IN CELL AND PUT EXCEPTION
-			// MESSAGE IN EXCEPTIONMESSAGELINE
-
+			else
+				return cell;
+		} catch(IllegalArgumentException e)
+		{
+			return "#ERROR";
+			
+			// TO DO: VERY IMPORTENT: This should be put in the separate bar for the error message!
+			// return JOptionPane.showMessageDialog(null, "Error: "+e.getCause().getMessage());
 		}
 
-		else
-			return cell;
+
 
 	}
 
@@ -206,72 +216,222 @@ public class Table {
 	}
 
 	/**
-	 * method indexExpander Sorts indexes alphabetically and numerically and
-	 * replaces all ":" with ",", while adding the indexes between the values
-	 * next to ":" Receives input as: "X1,/: Y1" ("=", function and brackets are
-	 * already removed) Returns indexes containing only comma's (only ",", no
-	 * more ":")
+	 * method indexExpander 
+	 * Cuts out the "," and puts the pieces in ArrayList<String>
+	 * 
+	 * Scans for ":", sorts the indexes out one by one
+	 * then fetches the contents and put them in ArrayList<String>
+	 * If 
 	 * 
 	 * @param index
 	 */
-	public static ArrayList<Coor> indexExpander(String index) {
-		ArrayList<Coor> indexes = new ArrayList<Coor>();
-		String[] temp = new String[2];
+	public static ArrayList<Object> indexExpander(String index) throws IllegalArgumentException {
 
-		char x1;
-		int y1;
-		char x2;
-		int y2;
 
-		// Cut out white spaces
+		ArrayList<Object> result = new ArrayList<Object>();
+//		Pattern for ONLY a coordinate
+		String coordinate = "(^x{1})([0-9]{0,3})(y{1})([0-9]{0,3}$)";
+		String containsCoor = ".*(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}).*"; 	
+		
+//		Cut out white spaces
 		index = index.replace(" ", "");
-
-		// Get indexes separated bij commas in an arraylist
-		ArrayList<String> items = new ArrayList<String>(Arrays.asList(index
-				.split(",")));
-
-		for (String item : items) {
-			// check if stringpiece contains ":"
-			if (item.contains(":")) {
-				// separate by ":" into two stringpieces
-				temp = item.split(":");
-
-				// get coordinations in the right parameters
-				x1 = temp[0].substring(0, 1).charAt(0);
-				y1 = Integer.parseInt(temp[0].substring(1, 2));
-				x2 = temp[1].substring(0, 1).charAt(0);
-				y2 = Integer.parseInt(temp[1].substring(1, 2));
-
-				// loop for the char
-				for (char a = x1; a <= x2; a++) {
-					// loop for the int
-					for (int j = y1; j <= y2; j++) {
-						indexes.add(new Coor(a, j));
-
+		
+//		Get indexes separated by commas in an arraylist
+		ArrayList<String> items = new ArrayList<String>(Arrays.asList(index.split(",")));
+		
+		for(String item: items)
+		{
+//			check if stringpiece contains ":"
+			if(item.contains(":"))
+			{
+				String[] tempCoorSeperate = new String[2];
+//				
+//				separate by ":" into two stringpieces
+				tempCoorSeperate = item.split(":");
+				
+//				Check whether on the left and right of the ":" there are Coordinates
+				if(!(tempCoorSeperate[0].matches(coordinate)) || !(tempCoorSeperate[1].matches(coordinate)))
+				{
+					throw new IllegalArgumentException("Please give two coordinates for a range");
+				}
+			
+//				Declare x's and y's for both coordinates
+				int xUnder = getCoorX(tempCoorSeperate[0]);
+				int yUnder = getCoorY(tempCoorSeperate[0]);
+				int xUpper = getCoorX(tempCoorSeperate[1]);
+				int yUpper = getCoorY(tempCoorSeperate[1]);
+							
+//				loop for 
+				for(int i = xUnder; i<=xUpper; i++)
+				{
+//					loop for the y
+					for(int j = yUnder; j<=yUpper; j++)
+					{
+						String coor = "x" + i + "y" + j; 
+						result.add(replaceCoor(getCoorContent(coor)));
+						
 					}
 				}
-
-			}
-
-			// handle when String piece does not contain ":"
-			else {
-				for (String item1 : items) {
-//					TO DO: This should check wether the element starts with a char and ends with one (or more) ints. If so, it should
-//					treat it like a coor and add it like a coor. If not, it should take it as a String and just push it in the ArrayList and
-//					through
+				
+			}	//end of ":"-case 
+			
+//			handle when String piece does not contain ":"
+			else 
+			{
+//				Check if String is a coordinate
+				if(item.matches(coordinate))
+				{
+//					If so, fetch the content of the Coordinate
+					item = getCoorContent(item);
 					
-					indexes.add(new Coor(item1.substring(0, 1).charAt(0),
-							Integer.parseInt(item1.substring(1, 2))));
+//					If result is a new coordinate
+					if(item.matches(coordinate))
+					{
+						result.add(replaceCoor(getCoorContent(item)));
+					}
+//					If item has coordinate
+					else if(item.matches(containsCoor))
+					{
+						result.add(replaceCoor(item));
+					}
+					else
+					{
+						result.add(contentParser(item));
+					}
+					
 				}
-
+				
+//				Check if String contains a coordinate
+				else if(item.matches(containsCoor))
+				{
+//					If so, replace all coordinates with their contents
+					item = replaceCoor(item);
+//					Add to result
+					result.add(item);
+				} else 
+				{
+					/*If item is not a coordinate and doesn't contain a coordinate,
+					 * call method to parse to right parameter type */
+					
+//					Call parser method and add to result
+					result.add(contentParser(item));
+				}
 			}
 
-		}
-
-		return indexes;
+		}	//help: this is the FOR bracket
+		
+		return result;
 
 	}
+	
+	
+	/**
+	 * method getCoorContent
+	 * input: A coor (not more then that!)
+	 * Output: A String with the coor's content
+	 */
+	public static String getCoorContent(String coor)
+	{
+		String[] temp = new String[2];
+		int x;
+		int y;
+		
+		// Under: get coordinations in the right parameters
+		// to get Under:
+		String temporary = coor.replace("x", "");
+		temp = temporary.split("y");
 
+		// Under: tempForUnder[0] is now the wanted Array for Under
+		x = Integer.parseInt(temp[0]);
+		y = Integer.parseInt(temp[1]);
+		
+		return getContent(x,y);
+		
+		
+	}
+	
+	public static int getCoorX(String coor)
+	{
+//		Delete "x"
+		coor = coor.replace("x", "");
+		
+//		Split on "y"
+		String[] temp = new String[2];
+//		Get int x
+		int x = Integer.parseInt(temp[0]);
+		
+		return x;
+	}
+	
+	public static int getCoorY(String coor)
+	{
+//		Delete "x"
+		coor = coor.replace("x", "");
+		
+//		Split on "y"
+		String[] temp = new String[2];
+//		Get int y
+		int y = Integer.parseInt(temp[1]);
+		
+		return y;
+	}
+	
+
+	/**
+	 * Method replaceCoor
+	 * Method to replace all coordinates with their 
+	 * value when you have a String and you know it 
+	 * contains a coordinate
+	 * @param String hasCoor
+	 * @return String replaced
+	 */
+	public static String replaceCoor(String hasCoor)
+	{
+		Pattern patternCoor = Pattern.compile("(x{1})([0-9]{0,3})(y{1})([0-9]{0,3})");
+		String containsCoor = ".*(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}).*";
+		
+		while(hasCoor.matches(containsCoor)) {
+			
+			Matcher m = patternCoor.matcher(hasCoor);
+			
+			String toBeReplaced = m.find() ? m.group() : "";
+			
+			hasCoor = hasCoor.replaceFirst(toBeReplaced, getCoorContent(toBeReplaced));
+		}
+		
+		return hasCoor;
+	}
+	
+	/**
+	 * Method contentParser
+	 * Is to be called when an item in the content of
+	 * the arraylist containing the stringpieces between
+	 * "," is not a coordinate and does not contain a coordinate
+	 * Check whether input is a double or int
+	 * If so, parses item to double
+	 * If not, returns item as it was
+	 * @param String item
+	 * @return Object item
+	 */
+	public static Object contentParser(String item)
+	{
+//		Pattern to match a double or an integer
+		String isDouble = "[0-9]+" + "((\\.){1}([0-9])+)?";
+		
+//		check if item is a int/double
+		if(item.matches(isDouble))
+		{
+//			parse String to Double
+			double resultDouble = Double.valueOf(item).doubleValue();
+			return resultDouble;
+		}
+		
+//		If item is not a double or an integer (which means it is a formula), return it as it was
+		return item;
+		
+	}
+	
+	
 	/**
 	 * method functionExist tests if the function, extracted from the input from
 	 * cell, is one of the implemented functions
@@ -368,10 +528,10 @@ public class Table {
 	 * the result of that function
 	 * 
 	 * @param function
-	 * @return
+	 * @return String resultOfFunction
 	 */
-	public static String callFunction(String function,
-			ArrayList<Object> cellContents) {
+	public static String callFunction(String function, ArrayList<Object> cellContents) throws IllegalArgumentException {
+		
 		// I count on the fact that the functions return strings
 		switch (function) {
 
@@ -455,9 +615,7 @@ public class Table {
 			return Functions.sumif(cellContents);
 		}
 		default:
-			throw new IllegalArgumentException("Fill in a valid function");
-			// TO DO: how do I sent a message with this
-			// IllegalArgumentException?
+			throw new IllegalArgumentException("Please fill in a valid function");
 
 		}
 	}
