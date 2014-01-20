@@ -117,7 +117,7 @@ public class VIEW extends javax.swing.JFrame {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jTable1);
 
-        jTextField3.setText("ERROR LOG");
+        jTextField3.setText(jTable1.getValueAt(1,1).toString());
 
         jMenu1.setText("File");
 
