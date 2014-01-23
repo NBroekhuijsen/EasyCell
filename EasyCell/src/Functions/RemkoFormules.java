@@ -26,7 +26,7 @@ public class RemkoFormules {
 
 		for(Object number: input)
 		{
-			if(number instanceof Integer || number instanceof Double)
+			if(number instanceof Double)
 			{
 				result = result + (double)number;
 			}
@@ -114,47 +114,57 @@ public class RemkoFormules {
 
 	public static String ifFunction(ArrayList<Object> input)
 	{
-		// Initiating solution boolean
 		boolean solution = false;
 		String expression = "";
+		String returnwaarde = "";
 		if (input.size() != 3)
 		{
 			throw new IllegalArgumentException(
 				"please use exactly 3 values for this function.");
 		}
-		if (input.get(0) instanceof String)
-		{
-			expression = (String) input.get(0);
-		}
-		else if(input.get(0) instanceof Double)
+		// voor elk cijfer wordt er true gereturned behalve voor 0.
+		if(input.get(0) instanceof Double)
 		{
 			if(!((double) input.get(0) == 0))
 			{
 				solution = true;
 			}
 		}
-		else
+
+		else if (input.get(0) instanceof String && !(input.get(0) instanceof Double))
 		{
-			throw new IllegalArgumentException("Please use a valid expression");
+			expression = (String) input.get(0);
+			// Replace some String input to logical operators (To be sure)
+			expression = expression.replaceAll("AND", "&&");
+			expression = expression.replaceAll("OR", "||");
+			expression = expression.replaceAll("=", "==");
+			try
+			{
+				ScriptEngineManager manager = new ScriptEngineManager();
+				ScriptEngine engine = manager.getEngineByName("JavaScript");
+				solution = ((boolean) engine.eval(expression));
+			}
+			catch (Exception e)
+			{
+				throw new IllegalArgumentException("He, je faalt");
+			}
 		}
-// Replace some String input to logical operators (To be sure)
-		expression = expression.replaceAll("AND", "&&");
-		expression = expression.replaceAll("OR", "||");
-		expression = expression.replaceAll("=", "==");
-// Initiating solution boolean
-		String solution = "";
-
-		try {
-
-			ScriptEngineManager manager = new ScriptEngineManager();
-			ScriptEngine engine = manager.getEngineByName("JavaScript");
-			solution = String.valueOf(!((boolean) engine.eval(expression)));
-
-		} catch (Exception e) {
-
-			throw new IllegalArgumentException("He, je faalt");
-
+		
+		// als het false is returned hij de tweede waarde, als het true is returned hij de eerste waarde.
+		int juistewaarde = 2;
+		if(solution == true)
+		{
+			juistewaarde = 1;
 		}
-		return solution;
+		// hier wordt er bepaald of de waarde die je wilt returnen een double of string is, vervolgens geparsed.
+		if(input.get(juistewaarde) instanceof String)
+		{
+			returnwaarde = ( (String) input.get(juistewaarde) );
+		}
+		else if(input.get(juistewaarde) instanceof Double)
+		{
+			returnwaarde = Double.toString((double) input.get(juistewaarde));
+		}
+		return returnwaarde;
 	}
 }

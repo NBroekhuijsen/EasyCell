@@ -211,7 +211,7 @@ public class RemkoFormulesTest {
 	public void testifFunction1st() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("1+1=2");
-		testlijst.add(2);
+		testlijst.add(2.0);
 		testlijst.add("blabla");
 		assertTrue(RemkoFormules.ifFunction(testlijst).equals("2.0"));
 	}
@@ -220,16 +220,34 @@ public class RemkoFormulesTest {
 	public void testifFunction2nd() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("1+1=6");
-		testlijst.add(2);
+		testlijst.add(2.0);
 		testlijst.add("blabla");
 		assertTrue(RemkoFormules.ifFunction(testlijst).equals("blabla"));
+	}
+	
+	@Test
+	public void testifFunctionWithDouble() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(5.0);
+		testlijst.add(2.0);
+		testlijst.add("blabla");
+		assertTrue(RemkoFormules.ifFunction(testlijst).equals("2.0"));
+	}
+	
+	@Test
+	public void testifFunctionWithZero() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(0.0);
+		testlijst.add(2.0);
+		testlijst.add(-5.0);
+		assertTrue(RemkoFormules.ifFunction(testlijst).equals("-5.0"));
 	}
 	
 	@Test
 	public void testifFunctionFalse() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("(44-22=22)&&(22+22=66)");
-		testlijst.add(2);
+		testlijst.add(2.0);
 		testlijst.add("blabla");
 		assertFalse(RemkoFormules.ifFunction(testlijst).equals("2.0"));
 	}
@@ -238,7 +256,7 @@ public class RemkoFormulesTest {
 	public void testifFunctionNotLogical() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("blabla3");
-		testlijst.add(2);
+		testlijst.add(2.0);
 		testlijst.add("blabla");
 		assertFalse(RemkoFormules.ifFunction(testlijst).equals("2.0"));
 	}
@@ -247,7 +265,17 @@ public class RemkoFormulesTest {
 	public void testifFunctionNotEnoughInputs() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("44-22=22");
-		testlijst.add(2);
+		testlijst.add(2.0);
+		assertFalse(RemkoFormules.ifFunction(testlijst).equals("2.0"));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testifFunctionTooManyInputs() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("44-22=22");
+		testlijst.add(2.0);
+		testlijst.add(2.0);
+		testlijst.add(2.0);
 		assertFalse(RemkoFormules.ifFunction(testlijst).equals("2.0"));
 	}
 }
