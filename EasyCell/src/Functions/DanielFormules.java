@@ -46,40 +46,50 @@ public class DanielFormules {
 
 	public static String or(ArrayList<Object> input) {
 		boolean solution = false;
+		boolean numbersolution = false;
+		boolean returnwaarde = false;
 		String expression = "";
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("JavaScript");
-		for(Object object : input)	{
-			if (object instanceof Double) {
-				if((double) object != 0)
-				{
-	// ALS ER NULLEN IN STAAN DAN ZIJN DEZE FALSE. DIT MOET ER NOG BIJ KOMEN.
-					return "true";
-				}
-			}
-			else if (expression instanceof String) {
-				expression = (String) object;
-			} else{
-				throw new IllegalArgumentException("Please use a number as base");
-			}
-	// Replace some String input to logical operators (To be sure)
-			expression = expression.replaceAll("AND", "&&");
-			expression = expression.replaceAll("OR", "||");
-			expression = expression.replaceAll("=", "==");
-			try {
-	// iterate trough every individual expression, setting 'solution'to
-	// true if it finds a true one
-				if (!solution) {
-					if ((boolean) engine.eval(expression)) {
-						solution = true;
+		for(int i = 0; i < input.size(); i++)	{
+			if (input.get(i) instanceof String && !(input.get(i) instanceof Double))
+			{
+				expression = (String) input.get(i);
+		// Replace some String input to logical operators (To be sure)
+				expression = expression.replaceAll("AND", "&&");
+				expression = expression.replaceAll("OR", "||");
+				expression = expression.replaceAll("=", "==");
+				try {
+		// iterate trough every individual expression, setting 'solution'to
+		// true if it finds a true one
+					if (!solution) {
+						if ((boolean) engine.eval(expression)) {
+							solution = true;
+						}
 					}
+				} catch (Exception e) {
+					System.out.println("Not a valid Expression");
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				System.out.println("Not a valid Expression");
-				e.printStackTrace();
 			}
 		}
-		return String.valueOf(solution);
+		// na alle mogelijke strings te hebben ge-evalueerd, ga je hierna de
+		// doubles evalueren. Een 0 is false, elke andere returned true.
+		for(int i = 0; i < input.size(); i++)	{
+			if (input.get(i) instanceof Double) {
+				if((double) input.get(i) != 0)
+				{
+					numbersolution = true;
+				}
+			}
+		}
+		//Oftewel, als hij nu bij de cijfers OF de strings een waarde heeft gevonden die
+		//true is, zal hij dat hier in de returnwaarde zetten.
+		if(numbersolution || solution)
+		{
+			returnwaarde = true;
+		}
+		return String.valueOf(returnwaarde);
 	}
 
 	public static String power(ArrayList<Object> input) {
