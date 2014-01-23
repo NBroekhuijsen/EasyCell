@@ -20,7 +20,7 @@ public class View extends javax.swing.JFrame {
     //components 
     private Model m_model;
     
-    private Model data_model = XMLParser.readXML("spreadsheet.xml");
+    private Model data_model = XMLParser.readXML("10x10xml.xml");
     
     //constructor (matisse prefers public)
     View(Model model) {

@@ -4,118 +4,102 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.table.AbstractTableModel;
 
-import EGGcel.Functions;
 
 public class Model extends AbstractTableModel {
 	
-	 private ArrayList<ArrayList<String>> table;
-	 
-	 //constructor
-	    Model() {
-	        table = new ArrayList<ArrayList<String>>();
-	    }
-	    
-	    /**
-         * Method to get the content from a cell in the table
-         * 
-         * @param x
-         *            - Variable that indicates the Row (x - axis) of the cell that
-         *            content is to be read from
-         * @param y
-         *            - Variable that indicates the Column (y - axis) of the cell
-         *            that content is to be read from
-         * @return returns the content of the cell as an Object
-         */
-        public String getContent(int x, int y) {
-                try {
-                        if (this.getSizeRow() >= x) {
-                                if (this.getSizeCol(x) >= y) {
-                                        return (String) table.get(y).get(x);
-                                }
-                        }
-                } catch (IndexOutOfBoundsException e) {
-                        System.out.print("There is no such cell, so: ");
-                }
-                System.out.println(this.getSizeRow() + " " + this.getSizeCol(x) + " " + x + " " + y );
-                return "";
-        }
-
-        /**
-         * Method to add content to the end of a row
-         * 
-         * @param x
-         * @param y
-         * @param content
-         */
-        public void addContent(int y, String content) {
-                this.hasRow(y);
-                table.get(y).add(content);
-        }
-
-        /**
-         * Method to set the content of a cell in the table
-         * 
-         * @param x
-         *            - Variable that specifies the Row of the cell
-         * @param y
-         *            - Variable that specifies the Column of the cell
-         * @param content
-         *            - Content to be put in the cell
-         */
-        public void setContent(int x, int y, String content) {
-                this.hasRow(y);
-                this.hasCol(x, y);
-                table.get(y).set(x, content);
-        }
-
-        /**
-         * check if table has y rows, otherwise creates row till it has
-         * 
-         * @param y
-         *            - number of rows to be checked
-         */
-        public void hasRow(int y) {
-                while (table.size() <= y) {
-                        table.add(new ArrayList<String>());
-                }
-        }
-
-        /**
-         * Checks if specified row has the number of columns, otherwise creates the
-         * amount
-         * 
-         * @param x
-         * @param y
-         */
-        public void hasCol(int x, int y) {
-                while (table.get(y).size() <= x) {
-                        table.get(y).add("");
-                        
-                }
-        }
-
-        /**
-         * Method to get the size of the table (amount of rows)
-         */
-        public int getSizeRow() {
-                return table.size();
-        }
-
-        /**
-         * Method to get the size of the table (amount of columns)
-         * 
-         * @param i
-         *            - number of the row you want the Column amount from
-         */
-        public int getSizeCol(int x) {
-        	if(x > table.size()){
-        		return table.get(x).size();
-        	}
-        	return 0;
-        }
+private ArrayList<ArrayList<String>> table;
+	
+	public Model(){
+		table = new ArrayList<ArrayList<String>>();
+	}
+	
+	/**
+	 * Method to check howmany rows a table has
+	 * @return - Number of rows the table has
+	 */
+	public int getRows(){
+		return table.size();
+	}
+	
+	
+	/**
+	 * Adds a row to the column
+	 */
+	public void addRow(){
+		table.add(new ArrayList<String>());
+	}
+	
+	/**
+	 * Adds a column to the 
+	 * @param row
+	 */
+	public void addColumn(int row){
+		if(this.getRows() >= row){
+			(table.get(row)).add(" ");
+		}else{
+			ensureRows(row);
+		}
+	}
+	
+	
+	/**
+	 * Method that returns the amount of columns on the specified row
+	 * @param row - Number of the row where you want to check how many columns there are.
+	 * @return - returns amount of colums
+	 */
+	public int getCols(int row){
+		if(this.getRows() >= row){
+			return (table.get(row)).size();
+		}else{
+			throw new IllegalArgumentException("The table doesn't have that many rows");
+		}
+	}
+	
+	/**
+	 * Method to ensure that there are the number of rows the user specifies
+	 * @param row - rows to be had
+	 */
+	public void ensureRows(int row){
+		while(this.getRows() <= row){
+			this.addRow();
+		}
+	}
+	/**
+	 * Method to ensure that there are the amount of columns on the row the user specifies, also creates rows if the row does not exist
+	 * @param row - Rows to be had
+	 * @param col - Columns to be had
+	 */
+	public void ensureCols(int row, int col){
+		ensureRows(row);
+		while(this.getCols(row) <= col){
+			addColumn(row);
+		}
+	}
+	
+	/**
+	 * Method to set the content of a specific tablecell, first ensures that it exist by using the EnsureCols() method
+	 * @param row - Row of cell where the content needs to be set
+	 * @param col - Column of the cell where the content needs to be set.
+	 * @param content - Content to be set
+	 */
+	public void setContent(int row, int col, String content){
+		ensureCols(row, col);
+		(table.get(row)).set(col, content);
+	}
+	
+	public String getContent(int row, int col){
+		if(this.getRows() >= row){
+			if(this.getCols(row) >= col){
+				return (String) (table.get(row)).get(col);
+			}else{
+				throw new IllegalArgumentException("There aren't that many Columns!");
+			}
+		}else{
+			throw new IllegalArgumentException("There aren't that many Rows!");
+		}
+	}
         
         /**
          * method CellReader
@@ -627,30 +611,20 @@ public class Model extends AbstractTableModel {
 
 		@Override
 		public int getColumnCount() {
-			this.hasCol(1, 1);
-			return this.getSizeCol(1);
+			return table.get(table.size() - 1).size();
 		}
 
 		@Override
 		public int getRowCount() {
-			int a = this.getSizeRow();
-			return this.getSizeRow();
+			return this.getRows();
 		}
 
 		@Override
-		public Object getValueAt(int y, int x) {
-			this.getContent(x, y);
-			return null;
+		public Object getValueAt(int row, int col) {
+			if((this.getRows() > row) && (this.getCols(row) > col)){
+				return this.getContent(row, col);
+			}else {
+				return null;
+			}
 		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -2,16 +2,13 @@ package MVCNieuw;
 
 
 import java.io.*;
-
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
-
 import org.w3c.dom.*;
-
 import javax.xml.parsers.*;
-
 import org.xml.sax.*;
+
 
 public class XMLParser {
 
@@ -20,6 +17,7 @@ public class XMLParser {
 	 * information
 	 * 
 	 * @param file
+	 * @return 
 	 * @return
 	 */
 	public static Model readXML(String file) {
@@ -35,7 +33,7 @@ public class XMLParser {
 			Document parsedfile = parser.parse(xmlfile);
 			// normalize the parsed file (make it more user-friendly)
 			parsedfile.getDocumentElement().normalize();
-
+			
 			NodeList cells = parsedfile.getElementsByTagName("CELL");
 			for (int i = 0; i < cells.getLength(); i++) {
 				// Get cell at list index i
@@ -44,9 +42,9 @@ public class XMLParser {
 				if (Node.ELEMENT_NODE == currentcell.getNodeType()) {
 					Element cellinfo = (Element) currentcell;
 					// get the row number from node attribute
-					int tabley = Integer.parseInt(cellinfo.getAttribute("row"));
+					int row = Integer.parseInt(cellinfo.getAttribute("row"));
 					// get the column number from the node attribute
-					int tablex = Integer.parseInt(cellinfo
+					int col = Integer.parseInt(cellinfo
 							.getAttribute("column"));
 					// get content from node
 					String content = cellinfo.getTextContent();
@@ -57,15 +55,14 @@ public class XMLParser {
 					// for
 					// using it later on
 					// put content in table, with row/column inserted as x/y
-					t.setContent(tablex, tabley, (String) content);
+					t.setContent(row, col, (String) content);
 				}
-				int a = 0;
 			}
 
 		} catch (ParserConfigurationException e) {
 			System.out.println("Fileparser could not be made");
 		} catch (IOException f) {
-			System.out.println("File could not be parsed");
+			System.out.println("File could not be parsed, did you enter the correct file name?");
 		} catch (SAXException g) {
 			System.out.println("Something went wrong in parsing the file");
 		}
@@ -95,21 +92,15 @@ public class XMLParser {
 
 			// create element nodes, and their attributes (Cells, and row/column
 			// data) and their content
-			for (int i = 1; i < t.getSizeRow(); i++) {
-				for (int j = 1; j < t.getSizeCol(i); j++) {
+			for (int row = 1; row < t.getRows(); row++) {
+				for (int col = 1; col < t.getCols(col); col++) {
 					Element cell = xmldoc.createElement("CELL");
 					// set attributes
-					cell.setAttribute("column", Integer.toString(j));
-					cell.setAttribute("row", Integer.toString(i));
-					// set content if string
-					if (t.getContent(j, i) instanceof String) {
+					cell.setAttribute("column", Integer.toString(col));
+					cell.setAttribute("row", Integer.toString(col));
+					// set content
 						cell.appendChild(xmldoc.createTextNode((String) t
-								.getContent(j, i)));
-					}
-					// set content if integer
-					else {
-						cell.appendChild(xmldoc.createTextNode(t.getContent(j, i)));
-					}
+								.getContent(row, col)));
 					// append node to document node
 					Documentnode.appendChild(cell);
 				}
@@ -137,19 +128,5 @@ public class XMLParser {
 			System.out.println("Can't write to file");
 		}
 	}
-
-	/**
-	 * Method to determine if a String is an integer
-	 * 
-	 * @param input
-	 * @return
-	 */
-	public static boolean checkInt(String input) {
-		try {
-			Integer.parseInt(input);
-		} catch (NumberFormatException e) {
-			return false;
-		}
-		return true;
-	}
 }
+

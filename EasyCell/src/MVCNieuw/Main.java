@@ -1,26 +1,14 @@
 package MVCNieuw;
 
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.crypto.spec.OAEPParameterSpec;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.io.*;
-import java.util.ArrayList;
-
 public class Main {
     
         public static void main(String args[]) {
             
-        Model      model      = new Model();
-        View       view       = new View(model);
+        Model model = new Model();
+        View view = new View(model);
+        
+        Model mo = XMLParser.readXML("10x10xml.xml");
             
-        Model test = XMLParser.readXML("spreadsheet.xml");
-        System.out.println(test.getContent(2, 2));
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
