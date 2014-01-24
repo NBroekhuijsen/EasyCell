@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.table.AbstractTableModel;
 
 
@@ -16,14 +17,13 @@ private ArrayList<ArrayList<String>> table;
 	}
 	
 	/**
-	 * Method to check howmany rows a table has
+	 * Method to check how many rows a table has
 	 * @return - Number of rows the table has
 	 */
 	public int getRows(){
 		return table.size();
 	}
-	
-	
+		
 	/**
 	 * Adds a row to the column
 	 */
@@ -163,29 +163,38 @@ private ArrayList<ArrayList<String>> table;
 
         /**
          * method functionTrimmer removes String function and brackets from
-         * cellcontent Receives input as: "FUNCTION(X1,Y2)" (So "=" is already
-         * removed) Returns input as: X1,Y2
+         * cellcontent 
+         * Receives input as: "FUNCTION(x1y1,x3y2)" (So "=" is already
+         * removed) Returns input as: x1y1,x3y2
          * 
          * @param input
          * @return String
          */
         public static String functionTrimmer(String input) {
 
-                String function = getFunction(input);
+        	 String function = Model.getFunction(input);
+    		 String regex = "(^[A-Z]+)\\({1}.+\\){1}$";
 
-                if (functionExist(function)) {
-                        // remove String function and brackets
-                        input = input.replace(function, "");
-                        input = input.replace(" ", "");
-                        input = input.replaceFirst("(", "");
-                        if(!(input.substring(input.length()-1).equals(")"))){
-                                input = input.substring(0, input.length()-1);
-                        }
-//                        for(int i = 0; i < input.length(i)){
-//                                if(Character.isLetter(charar))
-//                        }
-                }
-
+             if (Model.functionExist(function)) {
+            	  	                 
+    	                 if(input.matches(regex))
+    	                 {
+    	                	// remove String function and brackets
+        	                 input = input.replace(function, "");
+    	                	 
+	    	                 input = input.replace(" ", "");
+	    	                 input = input.replaceFirst("\\(", "");
+	    	                 input = input.substring(0, input.length()-1);
+	    	             }
+    	                 else
+    	                 {
+    	                	 throw new IllegalArgumentException("Please insert a function matching this order: FUNCTION(xXyY,xXyY, etc)");
+    	                 }
+             }
+             else
+             {
+            	 throw new IllegalArgumentException("This function does not exist");
+             }
                 return input;
         }
 
@@ -203,9 +212,10 @@ private ArrayList<ArrayList<String>> table;
                 return function;
 
         }
-
+        
         /**
          * method indexExpander 
+         * Recieves input
          * Cuts out the "," and puts the pieces in ArrayList<String>
          * 
          * Scans for ":", sorts the indexes out one by one
@@ -307,7 +317,7 @@ private ArrayList<ArrayList<String>> table;
                                 }
                         }
 
-                }        //help: this is the FOR bracket
+                }
                 
                 return result;
 
@@ -316,7 +326,7 @@ private ArrayList<ArrayList<String>> table;
         
         /**
          * method getCoorContent
-         * input: A coor (not more then that!)
+         * input: A coor (no more then that!)
          * Output: A String with the coor's content
          */
         public String getCoorContent(String coor)
@@ -346,7 +356,9 @@ private ArrayList<ArrayList<String>> table;
                 
 //                Split on "y"
                 String[] temp = new String[2];
+                
 //                Get int x
+                temp = coor.split("y");
                 int x = Integer.parseInt(temp[0]);
                 
                 return x;
@@ -360,6 +372,8 @@ private ArrayList<ArrayList<String>> table;
 //                Split on "y"
                 String[] temp = new String[2];
 //                Get int y
+                temp = coor.split("y");
+                
                 int y = Integer.parseInt(temp[1]);
                 
                 return y;
