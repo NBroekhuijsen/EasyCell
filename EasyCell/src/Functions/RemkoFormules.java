@@ -73,42 +73,115 @@ public class RemkoFormules {
 
 
 	public static String countif(ArrayList<Object> input) {
-
-		ScriptEngineManager manager = new ScriptEngineManager();
-		ScriptEngine engine = manager.getEngineByName("JavaScript");
 		double counter = 0.0;
-		//Loop for if the criteria has a logical operator
-		if(input.get(input.size() - 1) instanceof String)
+		if(input.get(0) instanceof String && !(input.get(0) instanceof Double))
 		{
-			String expression =(String) input.get(input.size() - 1);
-			input.remove(input.size() - 1);
-			for(Object in : input)
+			Double criteriaDouble = 0.0;
+			String inputString = (String) input.get(0);
+			String eersteTeken = inputString.substring(0,1);
+			String restVanDeString = inputString.substring(1);
+			//hier checken of het > of < is (eerste teken)
+			if(eersteTeken.equals(">") || eersteTeken.equals("<"))
 			{
-				if(in instanceof Double)
+				//checken of er een '=' acther de > of < staat:
+				if(restVanDeString.substring(0,1).equals("="))
 				{
-					String temp = (double )in + expression;
-					try {
-						if ((boolean) engine.eval(temp)){
+					eersteTeken = eersteTeken + "=";
+					restVanDeString = inputString.substring(2);
+				}
+				//checken of de rest van de string ook daadwerkelijk een double is.
+				boolean stringIsDouble = true;
+				try
+				{
+				  criteriaDouble = Double.parseDouble(restVanDeString);
+				}
+				catch(NumberFormatException e)
+				{
+				  stringIsDouble = false;
+				}
+				
+				//vervolgens elke 4 mogelijkheden afgaan, alleen als de string ook
+				//daadwerkelijk een double is.
+				if(stringIsDouble)
+				{
+					if(eersteTeken.equals(">"))
+					{
+						// begin op 1 om de controlewaarde over te slaan
+						for(int i = 1; i < input.size(); i++)
+						{
+							if(input.get(i) instanceof Double)
+							{
+								if((double) input.get(i) > criteriaDouble)
+								{
+									counter++;
+								}
+							}
+						}
+					}
+					if(eersteTeken.equals(">="))
+					{
+						for(int i = 1; i < input.size(); i++)
+						{
+							if(input.get(i) instanceof Double)
+							{
+								if((double) input.get(i) >= criteriaDouble)
+								{
+									counter++;
+								}
+							}
+						}
+					}
+					if(eersteTeken.equals("<"))
+					{
+						for(int i = 1; i < input.size(); i++)
+						{
+							if(input.get(i) instanceof Double)
+							{
+								if((double) input.get(i) < criteriaDouble)
+								{
+									counter++;
+								}
+							}
+						}
+					}
+					if(eersteTeken.equals("<="))
+					{
+						for(int i = 1; i < input.size(); i++)
+						{
+							if(input.get(i) instanceof Double)
+							{
+								if((double) input.get(i) <= criteriaDouble)
+								{
+									counter++;
+								}
+							}
+						}
+					}
+				}	
+			}
+			// als dit niet het geval is dan betekent het dat er of geen vergelijkings
+			// teken is, of dat er geen double achter het vergelijkingsteken staat.
+			// in dit geval dus kijken of je dezelfde strings kunt vinden.
+			// je moet ook strings die met > etc beginnen toe kunnen laten:
+			else
+			{
+				for(int i = 1; i < input.size(); i++)
+				{
+					if(input.get(i) instanceof Double)
+					{
+						if((double) input.get(i) <= criteriaDouble)
+						{
 							counter++;
 						}
-					} catch (ScriptException e) {
-						throw new IllegalArgumentException("Cant evaluate the countif");
 					}
 				}
 			}
 		}
-		else if((input.get(input.size() - 1) instanceof Double))
+		//hier checkn of de input een double is
+		if(input.get(0) instanceof Double)
 		{
-			double number = (double) (input.get(input.size() - 1));
-			input.remove(input.size() - 1);
-			for(Object in : input){
-				if(in instanceof Double){
-					if((double)in == number){
-						counter++;
-					}
-				}
-			}
-		}      	         
+			// hier elke double checken 
+		}
 		return Double.toString(counter);
 	}
 
