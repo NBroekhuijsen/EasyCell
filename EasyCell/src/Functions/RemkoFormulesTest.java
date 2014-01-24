@@ -177,6 +177,58 @@ public class RemkoFormulesTest {
 		testlijst.add(7.0);
 		testlijst.add(8.0);
 		testlijst.add(4.5);
+		testlijst.add(5.0);
+		assertEquals(RemkoFormules.countif(testlijst), "2.0");
+	}
+	
+	@Test
+	public void testCountIfLargerthanEqualTo() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(">=5.0");
+		testlijst.add(2.0);
+		testlijst.add(7.0);
+		testlijst.add(8.0);
+		testlijst.add(4.5);
+		testlijst.add(5.0);
+		assertEquals(RemkoFormules.countif(testlijst), "3.0");
+	}
+	
+	@Test
+	public void testCountIfSmallerthan() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("<5.0");
+		testlijst.add(2.0);
+		testlijst.add(7.0);
+		testlijst.add(8.0);
+		testlijst.add(4.5);
+		testlijst.add(5.0);
+		assertEquals(RemkoFormules.countif(testlijst), "2.0");
+	}
+	
+	@Test
+	public void testCountIfSmallerthanEqualTo() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("<=5.0");
+		testlijst.add(2.0);
+		testlijst.add(7.0);
+		testlijst.add(8.0);
+		testlijst.add(4.5);
+		testlijst.add(5.0);
+		assertEquals(RemkoFormules.countif(testlijst), "3.0");
+	}
+	
+	@Test
+	public void testCountIfLargerThanString() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("<blabla");
+		testlijst.add(2.0);
+		testlijst.add("7.0");
+		testlijst.add(8.0);
+		testlijst.add("blabla");
+		testlijst.add("<blabla");
+		testlijst.add(4.5);
+		testlijst.add("<blabla");
+		testlijst.add(5.0);
 		assertEquals(RemkoFormules.countif(testlijst), "2.0");
 	}
 	
