@@ -32,32 +32,115 @@ public static String sum(ArrayList<Object> input)  throws IllegalArgumentExcepti
 * range = the rest of ArrayList Object
 * @return String
 */
-public static String sumif(ArrayList<Object> input)
-{
-	double result = 0;
+public static String sumif(ArrayList<Object> input) {
+	double result = 0.0;
 	if(input.size() < 2)
 	{
-		throw new IllegalArgumentException("Please select at least two cells");
+		throw new IllegalArgumentException("Please select at least 2 cells.");
 	}
-	if(input.get(0) instanceof Double)
+	if(input.get(0) instanceof String && !(input.get(0) instanceof Double))
 	{
-		double criteria = (double)input.get(0);
-		for(int i = 1; i<input.size(); i++)
-		{	
-//			if(!(input.get(i)instanceof Double))
-//			{
-//				throw new IllegalArgumentException("Please select cells containing only numbers!");
-//			}
-			if(input.get(i) instanceof Double)
+		Double criteriaDouble = 0.0;
+		String inputString = (String) input.get(0);
+		String eersteTeken = inputString.substring(0,1);
+		String restVanDeString = inputString.substring(1);
+		boolean stringIsDouble = true;
+		//hier checken of het > of < is (eerste teken)
+		if(eersteTeken.equals(">") || eersteTeken.equals("<"))
+		{
+			//checken of er een '=' acther de > of < staat:
+			if(restVanDeString.substring(0,1).equals("="))
 			{
-				if((double)input.get(i) == criteria)
-					result = result + (double)input.get(i);
+				eersteTeken = eersteTeken + "=";
+				restVanDeString = inputString.substring(2);
+			}
+			//checken of de rest van de string ook daadwerkelijk een double is.
+			try
+			{
+			  criteriaDouble = Double.parseDouble(restVanDeString);
+			}
+			catch(NumberFormatException e)
+			{
+			  stringIsDouble = false;
+			}
+			
+			//vervolgens elke 4 mogelijkheden afgaan, alleen als de string ook
+			//daadwerkelijk een double is.
+			if(stringIsDouble)
+			{
+				if(eersteTeken.equals(">"))
+				{
+					// begin op 1 om de controlewaarde over te slaan
+					for(int i = 1; i < input.size(); i++)
+					{
+						if(input.get(i) instanceof Double)
+						{
+							if((double) input.get(i) > criteriaDouble)
+							{
+								result = result + (double) input.get(i);
+							}
+						}
+					}
+				}
+				if(eersteTeken.equals(">="))
+				{
+					for(int i = 1; i < input.size(); i++)
+					{
+						if(input.get(i) instanceof Double)
+						{
+							if((double) input.get(i) >= criteriaDouble)
+							{
+								result = result + (double) input.get(i);
+							}
+						}
+					}
+				}
+				if(eersteTeken.equals("<"))
+				{
+					for(int i = 1; i < input.size(); i++)
+					{
+						if(input.get(i) instanceof Double)
+						{
+							if((double) input.get(i) < criteriaDouble)
+							{
+								result = result + (double) input.get(i);
+							}
+						}
+					}
+				}
+				if(eersteTeken.equals("<="))
+				{
+					for(int i = 1; i < input.size(); i++)
+					{
+						if(input.get(i) instanceof Double)
+						{
+							if((double) input.get(i) <= criteriaDouble)
+							{
+								result = result + (double) input.get(i);
+							}
+						}
+					}
+				}
 			}
 		}
+		else
+		{
+			throw new IllegalArgumentException("Please don't use a string as a criteria");
+		}
 	}
-	else
+	//hier checken of de input een double is
+	if(input.get(0) instanceof Double)
 	{
-		throw new IllegalArgumentException("Your criteria must be a number!");
+		for(int i = 1; i < input.size(); i++)
+		{
+			if(input.get(i) instanceof Double)
+			{
+				if((double) input.get(i) == (double) input.get(0))
+				{
+					result = result + (double) input.get(i);
+				}
+			}
+		} 
 	}
 	return Double.toString(result);
 }

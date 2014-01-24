@@ -74,12 +74,17 @@ public class RemkoFormules {
 
 	public static String countif(ArrayList<Object> input) {
 		double counter = 0.0;
+		if(input.size() < 2)
+		{
+			throw new IllegalArgumentException("Please select at least 2 cells.");
+		}
 		if(input.get(0) instanceof String && !(input.get(0) instanceof Double))
 		{
 			Double criteriaDouble = 0.0;
 			String inputString = (String) input.get(0);
 			String eersteTeken = inputString.substring(0,1);
 			String restVanDeString = inputString.substring(1);
+			boolean stringIsDouble = true;
 			//hier checken of het > of < is (eerste teken)
 			if(eersteTeken.equals(">") || eersteTeken.equals("<"))
 			{
@@ -90,7 +95,6 @@ public class RemkoFormules {
 					restVanDeString = inputString.substring(2);
 				}
 				//checken of de rest van de string ook daadwerkelijk een double is.
-				boolean stringIsDouble = true;
 				try
 				{
 				  criteriaDouble = Double.parseDouble(restVanDeString);
@@ -157,19 +161,33 @@ public class RemkoFormules {
 							}
 						}
 					}
-				}	
+				}
+				// je moet ook strings die met > etc. beginnen coveren hier:
+				// dus als wat er na > etc. komt geen double is:
+				if(!(stringIsDouble))
+				{
+					for(int i = 1; i < input.size(); i++)
+					{
+						if(input.get(i) instanceof String)
+						{
+							if(((String) input.get(i)).equals(inputString))
+							{
+								counter++;
+							}
+						}
+					}
+				}
 			}
 			// als dit niet het geval is dan betekent het dat er of geen vergelijkings
 			// teken is, of dat er geen double achter het vergelijkingsteken staat.
 			// in dit geval dus kijken of je dezelfde strings kunt vinden.
-			// je moet ook strings die met > etc beginnen toe kunnen laten:
 			else
 			{
 				for(int i = 1; i < input.size(); i++)
 				{
-					if(input.get(i) instanceof Double)
+					if(input.get(i) instanceof String)
 					{
-						if((double) input.get(i) <= criteriaDouble)
+						if(((String) input.get(i)).equals(inputString))
 						{
 							counter++;
 						}
@@ -180,7 +198,16 @@ public class RemkoFormules {
 		//hier checkn of de input een double is
 		if(input.get(0) instanceof Double)
 		{
-			// hier elke double checken 
+			for(int i = 1; i < input.size(); i++)
+			{
+				if(input.get(i) instanceof Double)
+				{
+					if((double) input.get(i) == (double) input.get(0))
+					{
+						counter++;
+					}
+				}
+			} 
 		}
 		return Double.toString(counter);
 	}

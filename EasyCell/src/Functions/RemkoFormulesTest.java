@@ -191,13 +191,16 @@ public class RemkoFormulesTest {
 		assertEquals(RemkoFormules.countif(testlijst), "2.0");
 	}
 	
-	@Test (expected = IllegalArgumentException.class)
+	@Test
 	public void testCountIfStrings() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add("holler at je string");
 		testlijst.add("55");
+		testlijst.add("holler at je string");
+		testlijst.add("holler at je string");
+		testlijst.add(66.6);
 		testlijst.add("55");
-		assertTrue(RemkoFormules.countif(testlijst).equals("1.0"));
+		assertTrue(RemkoFormules.countif(testlijst).equals("2.0"));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

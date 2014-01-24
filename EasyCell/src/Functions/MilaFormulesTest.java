@@ -57,6 +57,62 @@ public class MilaFormulesTest {
 	}
 	
 	@Test
+	public void testSumIfLargerThen() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(">2.0");
+		testlijst.add(2.0);
+		testlijst.add(3.0);
+		testlijst.add(4.0);
+		testlijst.add(2.0);
+		testlijst.add(2.0);
+		testlijst.add(8.0);
+		testlijst.add(2.1);
+		assertEquals(MilaFormules.sumif(testlijst), "17.1");
+	}
+	
+	@Test
+	public void testSumIfLargerThenEqualsThan() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add(">=3.0");
+		testlijst.add(2.0);
+		testlijst.add(3.0);
+		testlijst.add(4.0);
+		testlijst.add(2.0);
+		testlijst.add(2.0);
+		testlijst.add(8.0);
+		testlijst.add(2.1);
+		assertEquals(MilaFormules.sumif(testlijst), "15.0");
+	}
+	
+	@Test
+	public void testSumIfSmallerThen() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("<3.0");
+		testlijst.add(2.0);
+		testlijst.add(3.0);
+		testlijst.add(4.0);
+		testlijst.add(2.0);
+		testlijst.add(2.0);
+		testlijst.add(8.0);
+		testlijst.add(2.1);
+		assertEquals(MilaFormules.sumif(testlijst), "8.1");
+	}
+	
+	@Test
+	public void testSumIfSmallerThenEqualsThan() {
+		ArrayList<Object> testlijst = new ArrayList<Object>();
+		testlijst.add("<=3.0");
+		testlijst.add(2.0);
+		testlijst.add(3.0);
+		testlijst.add(4.0);
+		testlijst.add(2.0);
+		testlijst.add(2.0);
+		testlijst.add(8.0);
+		testlijst.add(2.1);
+		assertEquals(MilaFormules.sumif(testlijst), "11.1");
+	}
+	
+	@Test
 	public void testSumIfFalse() {
 		ArrayList<Object> testlijst = new ArrayList<Object>();
 		testlijst.add(5.0);
