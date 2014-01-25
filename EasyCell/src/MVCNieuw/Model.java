@@ -113,9 +113,13 @@ protected ArrayList<ArrayList<String>> table;
          *         cellcontent
          */
         protected String cellReader(String cell) {
-                
-        
-                
+            
+        	 // check if cellcontent starts with "="
+            if (!(cell.charAt(0) == ('='))){
+            	
+            	return cell;
+            }
+            else {  
                 // trim cell from empty spaces at beginning and ending
                 cell = cell.trim();
                 // String where the content of cell will be kept while being processed
@@ -123,8 +127,7 @@ protected ArrayList<ArrayList<String>> table;
                 String nwcell;
                 
                 try {
-                        // check if cellcontent starts with "="
-                        if (cell.charAt(0) == ('=')) {
+                        {
                                 // cut "=", the remaining will be our index and operations
                                 nwcell = cell.replaceFirst("=", "");
                                 nwcell = nwcell.trim();
@@ -148,15 +151,15 @@ protected ArrayList<ArrayList<String>> table;
                                 return callFunction(function, result);
         
                         }
-                        else
-                                return cell;
+                        
                 } catch(IllegalArgumentException e)
                 {
-                        return "#ERROR";
+                        return e.getMessage(); 
                         
                         // TO DO: VERY IMPORTENT: This should be put in the separate bar for the error message!
                         // return JOptionPane.showMessageDialog(null, "Error: "+e.getCause().getMessage());
                 }
+            }  
 
 
 
@@ -227,7 +230,7 @@ protected ArrayList<ArrayList<String>> table;
          */
         protected ArrayList<Object> indexExpander(String index) throws IllegalArgumentException {
 
-
+ 
                 ArrayList<Object> result = new ArrayList<Object>();
 //                Pattern for ONLY a coordinate
                 String coordinate = "(^x{1})([0-9]{0,3})(y{1})([0-9]{0,3}$)";

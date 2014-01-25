@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import Functions.JuliantiFormules;
 
-public class TestModel {
+public class TestModel { 
 //	Strings for the tests: testCellReader(), testFunctionTrimmer(), testGetFunction()
 	String exCell1 = "SUM(x3y1,x3y3)";
 	String exCell2 = "ISNUMBER(x1y1:x4y5)";
@@ -59,12 +59,19 @@ public class TestModel {
 //		 JAVADOC: checks if cellcontent begins with "=" If so, calls methods to perform
 //       conversions and calculations
 //		TO DO: non static, so a table has to be made
-			
+			 
 		assertEquals("1.0", data_model.cellReader("=SUM(x1y1,x2y1)"));
 		assertEquals("This is not the right String", data_model.cellReader("This is not the right String"));
-		assertEquals("99",data_model.cellReader("=ROUNDDOWN(x10y11)"));
-		assertEquals("100",data_model.cellReader("=ROUNDUP(x10y11)"));
+		assertEquals("1.123",data_model.cellReader("=ROUNDDOWN(1.123456,3)"));
+		assertEquals("1.124",data_model.cellReader("=ROUNDUP(1.123456, 3)"));
+		assertEquals("16.0", data_model.cellReader("=POWER(2,4)"));
+		assertEquals("16.0", data_model.cellReader("=POWER(x3y1,x5y1)"));
+		assertEquals("16.0", data_model.cellReader("=POWER(2,x5y1)"));
+		assertEquals(" ", data_model.cellReader(" "));
+		assertEquals("     ", data_model.cellReader("     "));
 		
+		
+		 
 
 
 	}
@@ -258,9 +265,12 @@ public class TestModel {
 	public void testCallFunction() {
 		
 //		error;
-		
-		
-		
+	}
+	
+	public void testEnsureRows(){
+		assertFalse(data_model.getRows() == 11);
+		data_model.ensureRows(12);
+		assertTrue(data_model.getRows() == 12);
 	}
 
 }
