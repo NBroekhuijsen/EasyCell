@@ -2,6 +2,7 @@ package MVCNieuw;
 
 import static org.junit.Assert.*;
 
+import java.awt.image.ReplicateScaleFilter;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -43,13 +44,14 @@ public class TestModel {
 	String coor4 = "x33y83";
 	
 	
-	
+
 //	Parameters for the test: testIndeExpander
 	String index1 = "A1: B2";
 	String index2 = "D1, F3: F5";
-	
-	
+		
 	String calc = "SUM()";
+	
+	Model data_model = XMLParser.readXML("Spreadsheet.xml");
 
 	@Test
 	public void testCellReader() {
@@ -57,18 +59,24 @@ public class TestModel {
 //		 JAVADOC: checks if cellcontent begins with "=" If so, calls methods to perform
 //       conversions and calculations
 //		TO DO: non static, so a table has to be made
+			
+		assertEquals("1.0", data_model.cellReader("=SUM(x1y1,x2y1)"));
+		assertEquals("This is not the right String", data_model.cellReader("This is not the right String"));
+		assertEquals("99",data_model.cellReader("=ROUNDDOWN(x10y11)"));
+		assertEquals("100",data_model.cellReader("=ROUNDUP(x10y11)"));
+		
 
-		
-		assertEquals("8", cellReader(exCell1));
-		assertEquals("This is not the right String", cellReader("This is not the right String"));
-//		TO DO: setContent for all the coordinates used in the testCellReader, then make functions with those coordinates and test the result
-		
+
+	}
+	
+	@Test
+	public void testGetRows(){
+		assertEquals(data_model.getRows(), 12 );
 	}
 	
 	@Test
 	public void testFunctionTrimmer() {
 //		DONE
-		
 		assertEquals("x3y1,x3y3", Model.functionTrimmer(exCell1));
 		assertEquals("x1y1:x4y5", Model.functionTrimmer(exCell2));
 		assertEquals("x1y5:x1y6", Model.functionTrimmer("SUM(x1y5:  x1y6)"));
@@ -89,29 +97,62 @@ public class TestModel {
 	
 	@Test
 	public void testGetFunction() {
-		
+//		DONE
 		assertEquals("SUM", Model.getFunction(exCell1));
 		assertEquals("ISNUMBER", Model.getFunction(exCell2));
 	}
-	
-		
+
+
 	@Test
 	public void testIndexExpander() {
-//		TO DO: non static, so a table has to be made
+//         method indexExpander 
+//         Recieves input as x1y2,x5y3:x33y3 etc.
+//         Cuts out the "," and puts the pieces in ArrayList<String>
+//        
+//         Scans for ":", sorts the indexes out one by one
+//         then fetches the contents and put them in ArrayList<String>
+
+		ArrayList<Object> temp = new ArrayList<Object>();
+		double nul = 0.0;
+		double een = 1.0;
+		double twee = 2.0;
+		double drie = 3.0;
+		
+		temp.add(nul);
+		temp.add(een);
+		temp.add(twee);
+		temp.add(drie);
+		
+		
+		assertTrue(temp.equals(data_model.indexExpander("x1y1, x2y1, x3y1, x4y1")));
+		assertTrue(temp.equals(data_model.indexExpander("x1y1:x4y1")));
+		assertEquals(10.0, data_model.indexExpander("x1y2").get(0));
+		
+		ArrayList<Object> temp2 = new ArrayList<Object>();
+		temp2.add("BijnaGefixt");
+		temp2.add(30.0);
+		temp2.add("coordinate+44=answer");
+
+
+		assertTrue(temp2.equals(data_model.indexExpander("BijnaGefixt, x1y4, coordinate+x5y6=answer")));
 		
 		
 	}
-	
-	
-	
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIndexExpanderNoCoorNextToDoublePoints() {
+		String wrong = "OOP:SuperVO";
+		assertEquals("indexesAndStuff", data_model.indexExpander(wrong));
+	}
 	
 	
 	@Test
 	public void testGetCoorContent() {
-//		TO DO: non static, so a table has to be made
-
+//		DONE
 		
-		
+		assertEquals("0", data_model.getCoorContent("x1y1"));
+		assertEquals("10", data_model.getCoorContent("x1y2"));
+		assertEquals("1", data_model.getCoorContent("x2y1"));
 		
 	}
 	
@@ -149,16 +190,16 @@ public class TestModel {
 		assertNotEquals(80, Model.getCoorY(coor3));
 		assertNotEquals(683, Model.getCoorY(coor4));
 		
-		
-		
+
+
 	}
 	
 	@Test
 	public void testReplaceCoor() {
-	
-//		TO DO: non static, so a table has to be made
-		
-		
+
+		assertEquals("1+1=2", data_model.replaceCoor("1+x2y1=2"));
+		assertEquals("111", data_model.replaceCoor("x2y1x2y1x2y1"));
+		assertEquals("lalala+1+2", data_model.replaceCoor("lalala+x2y1+x3y1"));
 	}
 	
 	@Test
@@ -216,6 +257,7 @@ public class TestModel {
 	@Test
 	public void testCallFunction() {
 		
+//		error;
 		
 		
 		
