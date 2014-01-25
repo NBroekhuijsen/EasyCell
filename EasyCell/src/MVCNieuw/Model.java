@@ -10,8 +10,9 @@ import javax.swing.table.AbstractTableModel;
 
 public class Model extends AbstractTableModel {
 	
-private ArrayList<ArrayList<String>> table;
 	
+protected ArrayList<ArrayList<String>> table;
+
 	public Model(){
 		table = new ArrayList<ArrayList<String>>();
 	}
@@ -111,7 +112,7 @@ private ArrayList<ArrayList<String>> table;
          * @return String (either with the calculation result or the original
          *         cellcontent
          */
-        public String cellReader(String cell) {
+        protected String cellReader(String cell) {
                 
         
                 
@@ -215,7 +216,7 @@ private ArrayList<ArrayList<String>> table;
         
         /**
          * method indexExpander 
-         * Recieves input
+         * Recieves input as x1y2,x5y3:x33y3 etc.
          * Cuts out the "," and puts the pieces in ArrayList<String>
          * 
          * Scans for ":", sorts the indexes out one by one
@@ -224,13 +225,14 @@ private ArrayList<ArrayList<String>> table;
          * 
          * @param index
          */
-        public ArrayList<Object> indexExpander(String index) throws IllegalArgumentException {
+        protected ArrayList<Object> indexExpander(String index) throws IllegalArgumentException {
 
 
                 ArrayList<Object> result = new ArrayList<Object>();
 //                Pattern for ONLY a coordinate
                 String coordinate = "(^x{1})([0-9]{0,3})(y{1})([0-9]{0,3}$)";
-                String containsCoor = ".*(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}).*";         
+                String containsCoor = ".*(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}).*";  
+                String fitsRangeWithProperCoordinates = "(^x{1})([0-9]{0,3})(y{1})([0-9]{0,3})" + "\\:" + "(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}$)";
                 
 //                Cut out white spaces
                 index = index.replace(" ", "");
@@ -243,17 +245,17 @@ private ArrayList<ArrayList<String>> table;
 //                        check if stringpiece contains ":"
                         if(item.contains(":"))
                         {
+//                          Check whether on the left and right of the ":" there are Coordinates
+                          if(!(item.matches(fitsRangeWithProperCoordinates)))
+                          {
+                                  throw new IllegalArgumentException("Please give two coordinates for a range");
+                          }
                                 String[] tempCoorSeperate = new String[2];
 //                                
 //                                separate by ":" into two stringpieces
                                 tempCoorSeperate = item.split(":");
-                                
-//                                Check whether on the left and right of the ":" there are Coordinates
-                                if(!(tempCoorSeperate[0].matches(coordinate)) || !(tempCoorSeperate[1].matches(coordinate)))
-                                {
-                                        throw new IllegalArgumentException("Please give two coordinates for a range");
-                                }
-                        
+
+
 //                                Declare x's and y's for both coordinates
                                 int xUnder = getCoorX(tempCoorSeperate[0]);
                                 int yUnder = getCoorY(tempCoorSeperate[0]);
@@ -266,9 +268,8 @@ private ArrayList<ArrayList<String>> table;
 //                                        loop for the y
                                         for(int j = yUnder; j<=yUpper; j++)
                                         {
-                                                String coor = "x" + i + "y" + j; 
-                                                result.add(this.replaceCoor(this.getCoorContent(coor)));
-                                                
+                                                result.add(contentParser(this.getContent(j,i)));
+
                                         }
                                 }
                                 
@@ -276,44 +277,27 @@ private ArrayList<ArrayList<String>> table;
                         
 //                        handle when String piece does not contain ":"
                         else 
-                        {
+                        { 
 //                                Check if String is a coordinate
                                 if(item.matches(coordinate))
                                 {
-//                                        If so, fetch the content of the Coordinate
-                                        item = getCoorContent(item);
+//                                        If so, fetch the content of the Coordinate and add's it to result
+                                        result.add(contentParser(this.getCoorContent(item)));
                                         
-//                                        If result is a new coordinate
-                                        if(item.matches(coordinate))
-                                        {
-                                                result.add(this.replaceCoor(getCoorContent(item)));
-                                        }
+                                }        
 //                                        If item has coordinate
-                                        else if(item.matches(containsCoor))
-                                        {
-                                                result.add(this.replaceCoor(item));
-                                        }
-                                        else
-                                        {
-                                                result.add(contentParser(item));
-                                        }
-                                        
-                                }
-                                
-//                                Check if String contains a coordinate
                                 else if(item.matches(containsCoor))
                                 {
-//                                        If so, replace all coordinates with their contents
-                                        item = this.replaceCoor(item);
-//                                        Add to result
-                                        result.add(item);
-                                } else 
+//                                	If so, replaces the coordinate with it's content and add's it to result
+                                       result.add(this.replaceCoor(item));
+                                }
+                                else 
                                 {
-                                        /*If item is not a coordinate and doesn't contain a coordinate,
-                                         * call method to parse to right parameter type */
+//                                If item is not a coordinate and doesn't contain a coordinate,
+//                                call method to parse to right parameter type 
                                         
-//                                        Call parser method and add to result
-                                        result.add(contentParser(item));
+//                                Call parser method and add to result
+                                  result.add(contentParser(item));
                                 }
                         }
 
@@ -322,14 +306,14 @@ private ArrayList<ArrayList<String>> table;
                 return result;
 
         }
-        
-        
+
+
         /**
          * method getCoorContent
          * input: A coor (no more then that!)
          * Output: A String with the coor's content
          */
-        public String getCoorContent(String coor)
+        protected String getCoorContent(String coor)
         {
                 String[] temp = new String[2];
                 int x;
@@ -344,7 +328,7 @@ private ArrayList<ArrayList<String>> table;
                 x = Integer.parseInt(temp[0]);
                 y = Integer.parseInt(temp[1]);
                 
-                return  (this.getContent(x,y));
+                return  (this.getContent(y,x));
                 
                 
         }
@@ -388,20 +372,20 @@ private ArrayList<ArrayList<String>> table;
          * @param String hasCoor
          * @return String replaced
          */
-        public String replaceCoor(String hasCoor)
+        protected String replaceCoor(String hasCoor)
         {
                 Pattern patternCoor = Pattern.compile("(x{1})([0-9]{0,3})(y{1})([0-9]{0,3})");
                 String containsCoor = ".*(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}).*";
-                
+
                 while(hasCoor.matches(containsCoor)) {
                         
                         Matcher m = patternCoor.matcher(hasCoor);
-                        
+                      
                         String toBeReplaced = m.find() ? m.group() : "";
                         
                         hasCoor = hasCoor.replaceFirst(toBeReplaced, this.getCoorContent(toBeReplaced));
                 }
-                
+
                 return hasCoor;
         }
         
@@ -432,7 +416,7 @@ private ArrayList<ArrayList<String>> table;
 //                If item is not a double or an integer (which means it is a formula), return it as it was
                 return item;
                 
-        }
+        }	
         
         
         /**
@@ -537,7 +521,7 @@ private ArrayList<ArrayList<String>> table;
                 
                 // I count on the fact that the functions return strings
                 switch (function) {
-
+                	
                 case "AVERAGE": {
                         return Functions.average(cellContents);
                 }
@@ -625,7 +609,7 @@ private ArrayList<ArrayList<String>> table;
 
 		@Override
 		public int getColumnCount() {
-			return table.get(table.size() - 1).size();
+			return this.getCols(getRows() - 1);
 		}
 
 		@Override
