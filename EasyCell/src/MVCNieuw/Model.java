@@ -114,9 +114,12 @@ protected ArrayList<ArrayList<String>> table;
          */
         protected String cellReader(String cell) {
             
+        	if(cell.equals("") || cell.equals(null)){
+        		return "";
+        	}
         	 // check if cellcontent starts with "="
             if (!(cell.charAt(0) == ('='))){
-            	
+            
             	return cell;
             }
             else {  

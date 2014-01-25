@@ -69,7 +69,8 @@ public class TestModel {
 		assertEquals("16.0", data_model.cellReader("=POWER(2,x5y1)"));
 		assertEquals(" ", data_model.cellReader(" "));
 		assertEquals("     ", data_model.cellReader("     "));
-		
+		assertEquals("",data_model.cellReader(""));
+	
 		
 		 
 
