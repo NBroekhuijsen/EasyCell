@@ -76,7 +76,7 @@ public class RemkoFormules {
 		double counter = 0.0;
 		if(input.size() < 2)
 		{
-			throw new IllegalArgumentException("Please select at least 2 cells.");
+			throw new IllegalArgumentException("Please use at least two cells/values.");
 		}
 		if(input.get(0) instanceof String && !(input.get(0) instanceof Double))
 		{
@@ -219,8 +219,7 @@ public class RemkoFormules {
 		String returnwaarde = "";
 		if (input.size() != 3)
 		{
-			throw new IllegalArgumentException(
-				"please use exactly 3 values for this function.");
+			throw new IllegalArgumentException("Please select three cells/values.");
 		}
 		// voor elk cijfer wordt er true gereturned behalve voor 0.
 		if(input.get(0) instanceof Double)
@@ -246,7 +245,7 @@ public class RemkoFormules {
 			}
 			catch (Exception e)
 			{
-				throw new IllegalArgumentException("He, je faalt");
+				throw new IllegalArgumentException("Please use a valid logical statement.");
 			}
 		}
 		

@@ -6,10 +6,10 @@ public class NielsFormules {
 
 	public static String lower(ArrayList<Object> input) {
 		if (input.size() > 1) {
-			throw new IllegalArgumentException("Please select only one cell.");
+			throw new IllegalArgumentException("Please select one cell/string.");
 		}
 		if (input.get(0) instanceof Double) {
-			throw new IllegalArgumentException("Please don't enter numbers.");
+			throw new IllegalArgumentException("Please don't use numbers.");
 		}
 		if (input.get(0) instanceof String) {
 
@@ -44,7 +44,7 @@ public class NielsFormules {
 		{
 			if(!(input.get(i) instanceof Double))
 			{
-				throw new IllegalArgumentException("Please select only cells containing numbers");
+				throw new IllegalArgumentException("Please select cells/values containing numbers");
 			}
 		}
         int size = input.size();
@@ -63,18 +63,16 @@ public class NielsFormules {
 	public static String mod(ArrayList<Object> input) {
         String result = "";
         if (input.size() > 2) {
-                throw new IllegalArgumentException("Please select only two cells.");
+                throw new IllegalArgumentException("Please select two cells/values.");
         }
         if (input.size() < 2) {
-                throw new IllegalArgumentException("Please select two cells.");
+                throw new IllegalArgumentException("Please select two cells/values.");
         }
         if (!(input.get(0) instanceof Double)) {
-                throw new IllegalArgumentException(
-                                "Please two cells each containing a number.");
+                throw new IllegalArgumentException("Please select two cells/values containing numbers only.");
         }
         if (!(input.get(1) instanceof Double)) {
-                throw new IllegalArgumentException(
-                                "Please two cells each containing a number.");
+                throw new IllegalArgumentException("Please select two cells/values containing numbers only.");
         }
         if (input.get(0) instanceof Double)
         {

@@ -9,8 +9,7 @@ public class DanielFormules {
 	public static String not(ArrayList<Object> input) {
 		String expression = "";
 		if (input.size() > 1) {
-			throw new IllegalArgumentException(
-				"please use 1 Expression for this function");
+			throw new IllegalArgumentException("please select one cell/string");
 		}
 		if (input.get(0) instanceof String) {
 			expression = (String) input.get(0);
@@ -38,7 +37,7 @@ public class DanielFormules {
 
 		} catch (Exception e) {
 
-			throw new IllegalArgumentException("He, je faalt");
+			throw new IllegalArgumentException("Please use a valid logical statement.");
 
 		}
 		return solution;
@@ -68,7 +67,7 @@ public class DanielFormules {
 						}
 					}
 				} catch (Exception e) {
-					System.out.println("Not a valid Expression");
+					System.out.println("Please use a valid logical statement.");
 					e.printStackTrace();
 				}
 			}
@@ -96,18 +95,17 @@ public class DanielFormules {
 		double base = 0;
 		double power = 0;
 		if (input.size() != 2) {
-			throw new IllegalArgumentException(
-				"Please use 2 numbers for this function");
+			throw new IllegalArgumentException("Please use two cells/values.");
 		}
 		if (input.get(0) instanceof Double) {
 			base = (double) input.get(0);
 		} else {
-			throw new IllegalArgumentException("Please use a number as base");
+			throw new IllegalArgumentException("Please use a number as base.");
 		}
 		if (input.get(1) instanceof Double) {
 			power = (double) input.get(1);
 		} else {
-			throw new IllegalArgumentException("Please use a number as base");
+			throw new IllegalArgumentException("Please use a number as power.");
 		}
 		return Double.toString(Math.pow(base, power));
 	}

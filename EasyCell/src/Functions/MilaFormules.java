@@ -36,7 +36,7 @@ public static String sumif(ArrayList<Object> input) {
 	double result = 0.0;
 	if(input.size() < 2)
 	{
-		throw new IllegalArgumentException("Please select at least 2 cells.");
+		throw new IllegalArgumentException("Please select at least 2 cells/values.");
 	}
 	if(input.get(0) instanceof String && !(input.get(0) instanceof Double))
 	{
@@ -157,7 +157,7 @@ public static String sign(ArrayList<Object> input) throws IllegalArgumentExcepti
 {
 	if(!(input.size() ==1))
 	{
-		throw new IllegalArgumentException("Please select one cell for the function SIGN");
+		throw new IllegalArgumentException("Please select one cell/value.");
 	}
 	else 
 	{
@@ -178,7 +178,7 @@ public static String sign(ArrayList<Object> input) throws IllegalArgumentExcepti
 		}
 		else
 		{
-			throw new IllegalArgumentException("Please select a cell containing a number");
+			throw new IllegalArgumentException("Please select a cell/value containing a number.");
 		}
 	}	
 	return "Something went wrong in the SIGN method. Trust me.";
@@ -192,11 +192,11 @@ public static String sqrt(ArrayList<Object> input)
 	double result;
 	if(!(input.size() ==1))
 	{
-		throw new IllegalArgumentException("Please select one cell for the function SQRT");
+		throw new IllegalArgumentException("Please select one cell/value.");
 	}
 	if(!(input.get(0) instanceof Double))
 	{
-		throw new IllegalArgumentException("Please select a cell containing a number");
+		throw new IllegalArgumentException("Please select a cell/value containing a number.");
 	}
 	else 
 	{
@@ -204,7 +204,7 @@ public static String sqrt(ArrayList<Object> input)
 		{
 			if((double)input.get(0) < 0)
 			{
-				throw new IllegalArgumentException("Please select a cell containing a positive number");
+				throw new IllegalArgumentException("Please select a cell/value containing a positive number.");
 			}
 			result = Math.sqrt((double)input.get(0));
 			return Double.toString(result);
@@ -224,12 +224,12 @@ public static String roundup(ArrayList<Object> input)
 //	throw exception if input does not contain 2 elements
 	if(input.size() != 2)
 	{
-		throw new IllegalArgumentException("Please select just two elements");
+		throw new IllegalArgumentException("Please select two cells/values.");
 	}
 //	throw exception if the elements are something other than a number
 	else if(!((input.get(0) instanceof Double) && (input.get(1) instanceof Double)))
 	{
-		throw new IllegalArgumentException("Please select only elements containing numbers");
+		throw new IllegalArgumentException("Please select cells/values containing numbers only");
 	}
 	else if(!(Double.toString((double)input.get(1)).matches(regex)))
 	{
@@ -261,20 +261,20 @@ public static String rounddown(ArrayList<Object> input)
 //	throw exception if input contains more or less than 2 elements
 	if(input.size() != 2)
 	{
-		throw new IllegalArgumentException("Please select just two elements");
+		throw new IllegalArgumentException("Please select two cells/values.");
 	}
 //	throw exception if the elements are something other than a number
 	else if(!((input.get(0) instanceof Double) && (input.get(1) instanceof Double)))
 	{
-		throw new IllegalArgumentException("Please select only elements containing numbers");
+		throw new IllegalArgumentException("Please select cells/values containing numbers only.");
 	}
 	else if(!(Double.toString((double)input.get(1)).matches(regex)))
 	{
-		throw new IllegalArgumentException("Please select a natural number as the criteria");
+		throw new IllegalArgumentException("Please select a natural number as the criteria.");
 	}
 	else if((double)input.get(1) < 0)
 	{
-		throw new IllegalArgumentException("The number of decimals cannot be smaller then 0");
+		throw new IllegalArgumentException("The number of decimals cannot be smaller then 0.");
 	}
 	else if(Double.toString((double)input.get(1)).matches(regex))
 	{

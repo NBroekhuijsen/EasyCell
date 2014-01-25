@@ -11,7 +11,7 @@ public class JuliantiFormules {
 	{
 		if(input.size() >= 2)
 		{
-			throw new IllegalArgumentException("Please select only one cell.");
+			throw new IllegalArgumentException("Please select one cell/value.");
 		}
 		
 		if(input.get(0) instanceof Double)
@@ -31,7 +31,7 @@ public class JuliantiFormules {
 		}
 		else
 		{
-			throw new IllegalArgumentException("Please select a cell containing a number.");
+			throw new IllegalArgumentException("Please select a cell/value containing a number.");
 		}
 	}
 	
@@ -39,7 +39,7 @@ public class JuliantiFormules {
 	{
 		if(input.size() > 1)
 		{
-			throw new IllegalArgumentException("Please select only one cell.");
+			throw new IllegalArgumentException("Please select one cell/value.");
 		}
 		
 		if(input.get(0) instanceof String)
@@ -58,11 +58,11 @@ public class JuliantiFormules {
 	{
 		if(input.size() > 1)
 		{
-			throw new IllegalArgumentException("Please select only one cell.");
+			throw new IllegalArgumentException("Please select one cell/value.");
 		}
 		if(!(input.get(0) instanceof Double))
 		{
-			throw new IllegalArgumentException("Please select a cell containing a number.");
+			throw new IllegalArgumentException("Please select a cell/value containing a number.");
 		}
 		double inputdouble = (double) input.get(0);
 		if(inputdouble%2 == 0)
@@ -76,7 +76,7 @@ public class JuliantiFormules {
 	{
 		if(input.size() > 1)
 		{
-			throw new IllegalArgumentException("Please select only one cell.");
+			throw new IllegalArgumentException("Please select one cell/value.");
 		}
 		if(input.get(0) instanceof Double)
 		{
