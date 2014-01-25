@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package JSpreadsheet.Package;
+package JSpreadsheet.Package1;
 
 /**
  *
@@ -32,6 +32,9 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
         jTextField2 = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -41,12 +44,36 @@ public class GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(453, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(131, 131, 131)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(180, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(480, 270));
 
         jTextField2.setText("jTextField2");
-        jTextField2.setMaximumSize(new java.awt.Dimension(84, 28));
-        jTextField2.setMinimumSize(new java.awt.Dimension(84, 28));
+        jTextField2.setMaximumSize(new java.awt.Dimension(140, 28));
+        jTextField2.setMinimumSize(new java.awt.Dimension(140, 28));
 
         jTextField1.setText("jTextField1");
 
@@ -95,6 +122,9 @@ public class GUI extends javax.swing.JFrame {
         jTable2.setCellSelectionEnabled(true);
         jTable2.getTableHeader().setReorderingAllowed(false);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jTable2MouseReleased(evt);
             }
@@ -124,7 +154,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField1))
                     .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING))
@@ -158,12 +188,30 @@ public class GUI extends javax.swing.JFrame {
                jTable2.setValueAt(( (String) Otable.cellReader(Otable.getContent(x, y))), x, y);
             }
         }
+         
+            
         
     }//GEN-LAST:event_jTable2PropertyChange
 
     private void jTable2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseReleased
-jTextField2.setText("X" + jTable2.getSelectedColumns() + "Y" + jTable2.getSelectedRows());        // TODO add your handling code here:
+
+        if (jTable2.getSelectedColumnCount() == 01 && jTable2.getSelectedRowCount() == 1 ){
+
+            jTextField2.setText("X" + jTable2.getSelectedColumn() + "Y" + jTable2.getSelectedRow());   
+            
+        } else {
+       
+                jTextField2.setText("X" + jTable2.getSelectedColumn() + "Y" + jTable2.getSelectedRow() + ":" + "X" + (jTable2.getSelectedColumn()+jTable2.getSelectedColumnCount() -1) + "Y" + (jTable2.getSelectedRow()+jTable2.getSelectedRowCount() -1));      
+            
+        }
+        
     }//GEN-LAST:event_jTable2MouseReleased
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        if (jTable2.getSelectedColumnCount() == 1 && jTable2.getSelectedRowCount() == 1 ){
+       jTextField1.setText(Otable.getContent(jTable2.getSelectedRow(),jTable2.getSelectedColumn()) + "");
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -196,14 +244,18 @@ jTextField2.setText("X" + jTable2.getSelectedColumns() + "Y" + jTable2.getSelect
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUI().setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;

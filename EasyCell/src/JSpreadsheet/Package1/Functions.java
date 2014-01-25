@@ -1,4 +1,4 @@
-package JSpreadsheet.Package;
+package JSpreadsheet.Package1;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

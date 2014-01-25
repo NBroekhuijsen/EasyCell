@@ -1,4 +1,4 @@
-package JSpreadsheet.Package;
+package JSpreadsheet.Package1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,10 +112,11 @@ protected ArrayList<ArrayList<String>> table;
          * @return String (either with the calculation result or the original
          *         cellcontent
          */
-        protected String cellReader(String cell) {
-            
+        protected String[] cellReader(String cell) {
+            String[] resultArray = new String[2];
         	if(cell.equals("") || cell.equals(null)){
-        		return "";
+                    resultArray = 
+                    return {"",""};
         	}
         	 // check if cellcontent starts with "="
             if (!(cell.charAt(0) == ('='))){
