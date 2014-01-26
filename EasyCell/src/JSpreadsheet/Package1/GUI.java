@@ -6,6 +6,11 @@
 
 package JSpreadsheet.Package1;
 
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+
 /**
  *
  * @author remkoleene
@@ -16,6 +21,7 @@ public class GUI extends javax.swing.JFrame {
     Model model = new Model();
     Model BGtable = new Model();
     Model Otable = new Model();
+    Model ErrorTable = new Model();
     /**
      * Creates new form GUI
      */
@@ -76,6 +82,11 @@ public class GUI extends javax.swing.JFrame {
         jTextField2.setMinimumSize(new java.awt.Dimension(140, 28));
 
         jTextField1.setText("jTextField1");
+        jTextField1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTextField1PropertyChange(evt);
+            }
+        });
 
         jTextField3.setText("jTextField3");
 
@@ -134,6 +145,11 @@ public class GUI extends javax.swing.JFrame {
                 jTable2PropertyChange(evt);
             }
         });
+        jTable2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable2KeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
         jTable2.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -178,14 +194,22 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTable2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTable2PropertyChange
-
+    String errorMessage = "";
             for (int y = 0; y<jTable2.getColumnCount(); y++){
             for(int x = 0; x<jTable2.getRowCount(); x++){
-           
-                 //Set O(original)table to the input of the user, with non processed function
-               Otable.setContent(x, y, ((String)jTable2.getValueAt( x, y )));
-               //Process cellcontents and functions, and set them in B(ack)G(round)Table
-               jTable2.setValueAt(( (String) Otable.cellReader(Otable.getContent(x, y))), x, y);
+              if(errorMessage.equals(""))
+                  if(!(((String)jTable2.getValueAt( x, y )).equals("#ERROR"))){
+                        Otable.setContent(x, y, ((String)jTable2.getValueAt( x, y )));                
+                   }
+                  jTextField1.setText(((String)jTable2.getValueAt( x, y )));
+                  //Strings for the result and for the errormessage
+                  String result = (String) ( Otable.cellReader(Otable.getContent(x, y)))[0];
+                  errorMessage = (String) ( Otable.cellReader(Otable.getContent(x, y)))[1];
+                  
+                  //Process cellcontents and functions, and set them in B(ack)G(round)Table
+                  jTable2.setValueAt( result, x, y);
+                  jTextField3.setText(errorMessage);
+ 
             }
         }
          
@@ -197,21 +221,33 @@ public class GUI extends javax.swing.JFrame {
 
         if (jTable2.getSelectedColumnCount() == 01 && jTable2.getSelectedRowCount() == 1 ){
 
-            jTextField2.setText("X" + jTable2.getSelectedColumn() + "Y" + jTable2.getSelectedRow());   
+            jTextField2.setText("x" + jTable2.getSelectedColumn() + "y" + jTable2.getSelectedRow());
             
         } else {
        
-                jTextField2.setText("X" + jTable2.getSelectedColumn() + "Y" + jTable2.getSelectedRow() + ":" + "X" + (jTable2.getSelectedColumn()+jTable2.getSelectedColumnCount() -1) + "Y" + (jTable2.getSelectedRow()+jTable2.getSelectedRowCount() -1));      
-            
+                jTextField2.setText("x" + jTable2.getSelectedColumn() + "y" + jTable2.getSelectedRow() + ":" + "x" + (jTable2.getSelectedColumn()+jTable2.getSelectedColumnCount() -1) + "y" + (jTable2.getSelectedRow()+jTable2.getSelectedRowCount() -1));      
+                
         }
         
     }//GEN-LAST:event_jTable2MouseReleased
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         if (jTable2.getSelectedColumnCount() == 1 && jTable2.getSelectedRowCount() == 1 ){
-       jTextField1.setText(Otable.getContent(jTable2.getSelectedRow(),jTable2.getSelectedColumn()) + "");
+                 jTextField1.setText(Otable.getContent(jTable2.getSelectedRow(),jTable2.getSelectedColumn()) + "");
+                 jTextField1.setText((String) Otable.getContent(jTable2.getSelectedRow(),jTable2.getSelectedColumn()));
+ 
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jTextField1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextField1PropertyChange
+         if (jTable2.getSelectedColumnCount() == 1 && jTable2.getSelectedRowCount() == 1 ){
+             jTextField1.setText((String) Otable.getContent(jTable2.getSelectedRow(),jTable2.getSelectedColumn()));
+         }
+    }//GEN-LAST:event_jTextField1PropertyChange
+
+    private void jTable2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable2KeyPressed
+       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0 ,true);
+    }//GEN-LAST:event_jTable2KeyPressed
 
     /**
      * @param args the command line arguments
@@ -263,5 +299,4 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 
- 
 }

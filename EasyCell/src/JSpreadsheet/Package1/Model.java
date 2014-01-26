@@ -113,15 +113,14 @@ protected ArrayList<ArrayList<String>> table;
          *         cellcontent
          */
         protected String[] cellReader(String cell) {
-            String[] resultArray = new String[2];
         	if(cell.equals("") || cell.equals(null)){
-                    resultArray = 
-                    return {"",""};
+                    String[] arrayResult = {"", ""};
+                    return arrayResult;
         	}
         	 // check if cellcontent starts with "="
             if (!(cell.charAt(0) == ('='))){
-            
-            	return cell;
+                String[] arrayResult = {cell, ""};
+            	return arrayResult;
             }
             else {  
                 // trim cell from empty spaces at beginning and ending
@@ -151,14 +150,17 @@ protected ArrayList<ArrayList<String>> table;
 
                                 ArrayList<Object> result = this.indexExpander(index);
         
-                                // Call the method to perform calculations
-                                return callFunction(function, result);
+                                // Call the method to perform calculations and return
+                                
+                                String[] arrayResult = {callFunction(function, result), ""};
+                                return arrayResult;
         
                         }
                         
                 } catch(IllegalArgumentException e)
                 {
-                        return e.getMessage(); 
+                    String[] arrayResult = {"#ERROR", e.getMessage()};
+                    return arrayResult; 
                         
                         // TO DO: VERY IMPORTENT: This should be put in the separate bar for the error message!
                         // return JOptionPane.showMessageDialog(null, "Error: "+e.getCause().getMessage());
@@ -512,7 +514,8 @@ protected ArrayList<ArrayList<String>> table;
                         return true;
                 }
                 default:
-                        return false;
+                    
+                    throw new IllegalArgumentException("Please fill in a valid function");
 
                 }
         }
