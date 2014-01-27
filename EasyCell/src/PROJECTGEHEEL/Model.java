@@ -1,4 +1,4 @@
-package PROJECTGEHEEL;
+package MVCNieuw;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -423,7 +423,7 @@ protected ArrayList<ArrayList<String>> table;
         public static Object contentParser(String item)
         {
 //                Pattern to match a double or an integer
-                String isDouble = "(\\s)*" + "[0-9]+" + "((\\.){1}([0-9])+)?" + "(\\s)*";
+                String isDouble = "(-){0,1}" + "(\\s)*" + "[0-9]+" + "((\\.){1}([0-9])+)?" + "(\\s)*"; 
                 
 //                check if item is a int/double
                 if(item.matches(isDouble))

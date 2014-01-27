@@ -94,7 +94,9 @@ public class TestModel {
 		assertEquals("true",data_model.cellReader(exCell20)[0]);
 		assertEquals("10.0",data_model.cellReader(exCell21)[0]);
 		assertEquals("6.0",data_model.cellReader(exCell22)[0]);
-//		assertEquals("isNegative",data_model.cellReader(exCell23)[0]);
+		assertEquals("isNegative",data_model.cellReader(exCell23)[0]);
+		assertEquals("isNegative",data_model.cellReader("=SIGN(-2.0)")[0]);
+		assertEquals("isNegative",data_model.cellReader("=SIGN(-500)")[0]); 
 		assertEquals("3.0",data_model.cellReader(exCell24)[0]);
 //		assertEquals("OOPPROJECT",data_model.cellReader(exCell25)[0]);
 //		assertEquals("oop project",data_model.cellReader(exCell26)[0]);
