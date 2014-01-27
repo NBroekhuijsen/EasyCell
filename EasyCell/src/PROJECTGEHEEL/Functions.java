@@ -333,6 +333,10 @@ public class Functions {
 					return "isPositive";
 				}
 			}
+			else if(input.get(0) instanceof String)
+					{
+				throw new IllegalArgumentException("kutding ga es werken");
+					}
 			else
 			{
 				throw new IllegalArgumentException("Please select a cell containing a number");
