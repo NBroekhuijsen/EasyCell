@@ -1,4 +1,4 @@
-package Pakketjuh;
+package MVCNieuw;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -248,7 +248,6 @@ protected ArrayList<ArrayList<String>> table;
                 for(String item: items)
                 {
                 	item.trim();
-                	System.out.println(item);
                 }
                 
                 for(String item: items)
@@ -322,7 +321,6 @@ protected ArrayList<ArrayList<String>> table;
 
                 }
                 
-                System.out.println(result);
                 return result;
 
         }

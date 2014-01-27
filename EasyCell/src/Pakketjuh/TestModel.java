@@ -1,4 +1,4 @@
-package Pakketjuh;
+package MVCNieuw;
 
 import static org.junit.Assert.*;
 
@@ -34,7 +34,7 @@ public class TestModel {
 	String exCell20 = "=ISNUMBER(2)";				//=true
 	String exCell21 = "=SUM(1,2,3,4)";				//=10.0
 	String exCell22 = "=SUMIF(2,2,3,4,2,2,8)";	//=6.0
-	String exCell23 = "=SIGN(-5)";					//=isNegative
+	String exCell23 = "=SIGN(-5)";					//=-1.0
 	String exCell24 = "=SQRT(9)";					//3.0
 	String exCell25 = "=UPPER(oopproject)";			//=OOPPROJECT
 	String exCell26 = "=LOWER(OoP pRoJeCt)";		//=oop project
@@ -60,10 +60,11 @@ public class TestModel {
 	@Test
 	public void testCellReader() {
 		
-//		 JAVADOC: checks if cellcontent begins with "=" If so, calls methods to perform
-//       conversions and calculations
+//		JAVADOC: checks if cellcontent begins with "=" If so, calls methods to perform
+//      conversions and calculations
 //		TO DO: non static, so a table has to be made
 			 
+		
 		assertEquals("1.0", data_model.cellReader("=SUM(x1y1,x2y1)")[0]);
 		assertEquals("This is not the right String", data_model.cellReader("This is not the right String")[0]);
 		assertEquals("1.123",data_model.cellReader("=ROUNDDOWN(1.123456,3)")[0]);
@@ -94,9 +95,9 @@ public class TestModel {
 		assertEquals("true",data_model.cellReader(exCell20)[0]);
 		assertEquals("10.0",data_model.cellReader(exCell21)[0]);
 		assertEquals("6.0",data_model.cellReader(exCell22)[0]);
-		assertEquals("isNegative",data_model.cellReader(exCell23)[0]);
-		assertEquals("isNegative",data_model.cellReader("=SIGN(-2.0)")[0]);
-		assertEquals("isNegative",data_model.cellReader("=SIGN(-500)")[0]); 
+		assertEquals("-1.0",data_model.cellReader(exCell23)[0]);
+		assertEquals("-1.0",data_model.cellReader("=SIGN(-2.0)")[0]);
+		assertEquals("-1.0",data_model.cellReader("=SIGN(-500)")[0]); 
 		assertEquals("3.0",data_model.cellReader(exCell24)[0]);
 //		assertEquals("OOPPROJECT",data_model.cellReader(exCell25)[0]);
 //		assertEquals("oop project",data_model.cellReader(exCell26)[0]);
