@@ -10,7 +10,6 @@ import javax.swing.table.AbstractTableModel;
 
 public class Model extends AbstractTableModel {
 	
-	
 protected ArrayList<ArrayList<String>> table;
 
 	public Model(){
@@ -161,9 +160,6 @@ protected ArrayList<ArrayList<String>> table;
                 {
                     String[] arrayResult = {"#ERROR", e.getMessage()};
                     return arrayResult; 
-                        
-                        // TO DO: VERY IMPORTENT: This should be put in the separate bar for the error message!
-                        // return JOptionPane.showMessageDialog(null, "Error: "+e.getCause().getMessage());
                 }
             }  
 
@@ -191,10 +187,11 @@ protected ArrayList<ArrayList<String>> table;
     	                 {
     	                	// remove String function and brackets
         	                 input = input.replace(function, "");
-    	                	 
-	    	                 input = input.replace(" ", "");
+    	                	
+	    	                 input = input.trim();
 	    	                 input = input.replaceFirst("\\(", "");
 	    	                 input = input.substring(0, input.length()-1);
+	    	                 input = input.trim();
 	    	             }
     	                 else
     	                 {
@@ -243,17 +240,25 @@ protected ArrayList<ArrayList<String>> table;
                 String containsCoor = ".*(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}).*";  
                 String fitsRangeWithProperCoordinates = "(^x{1})([0-9]{0,3})(y{1})([0-9]{0,3})" + "\\:" + "(x{1})([0-9]{0,3})(y{1})([0-9]{0,3}$)";
                 
-//                Cut out white spaces
-                index = index.replace(" ", "");
+////                Cut out white spaces
+//                index = index.replace(" ", "");
                 
 //                Get indexes separated by commas in an arraylist
                 ArrayList<String> items = new ArrayList<String>(Arrays.asList(index.split(",")));
+                for(String item: items)
+                {
+                	item.trim();
+                	System.out.println(item);
+                }
                 
                 for(String item: items)
                 {
 //                        check if stringpiece contains ":"
                         if(item.contains(":"))
                         {
+//                        Cut out white spaces
+                          item = item.replace(" ", "");
+                        	
 //                          Check whether on the left and right of the ":" there are Coordinates
                           if(!(item.matches(fitsRangeWithProperCoordinates)))
                           {
@@ -287,31 +292,37 @@ protected ArrayList<ArrayList<String>> table;
 //                        handle when String piece does not contain ":"
                         else 
                         { 
-//                                Check if String is a coordinate
-                                if(item.matches(coordinate))
-                                {
-//                                        If so, fetch the content of the Coordinate and add's it to result
-                                        result.add(contentParser(this.getCoorContent(item)));
-                                        
-                                }        
-//                                        If item has coordinate
-                                else if(item.matches(containsCoor))
-                                {
-//                                	If so, replaces the coordinate with it's content and add's it to result
-                                       result.add(this.replaceCoor(item));
-                                }
-                                else 
-                                {
-//                                If item is not a coordinate and doesn't contain a coordinate,
-//                                call method to parse to right parameter type 
-                                        
-//                                Call parser method and add to result
-                                  result.add(contentParser(item));
-                                }
+//                          Cut out white spaces
+                            item = item.trim();
+                            
+//                        	If item has coordinate
+                        	if(item.matches(containsCoor))
+                            {
+	                        	if(item.matches(coordinate))
+	                            {
+	//                             	If so, fetch the content of the Coordinate and add's it to result
+	                                result.add(contentParser(this.getCoorContent(item)));
+	                                   
+	                            }
+	                            else
+	                            {	
+	//                            	Replaces the coordinate with it's content and add's it to result
+	                                result.add(this.replaceCoor(item));	
+	                            }
+                            }
+	                        else 
+	                        {
+	//                        If item is not a coordinate and doesn't contain a coordinate,
+	//                        call method to parse to right parameter type 
+	                                
+	//                        Call parser method and add to result
+	                          result.add(contentParser(item));
+	                        }
                         }
 
                 }
                 
+                System.out.println(result);
                 return result;
 
         }
@@ -399,7 +410,7 @@ protected ArrayList<ArrayList<String>> table;
         }
         
         /**
-         * Method contentParser
+         * Method contentParser 
          * Is to be called when an item in the content of
          * the arraylist containing the stringpieces between
          * "," is not a coordinate and does not contain a coordinate
@@ -412,11 +423,12 @@ protected ArrayList<ArrayList<String>> table;
         public static Object contentParser(String item)
         {
 //                Pattern to match a double or an integer
-                String isDouble = "[0-9]+" + "((\\.){1}([0-9])+)?";
+                String isDouble = "(\\s)*" + "[0-9]+" + "((\\.){1}([0-9])+)?" + "(\\s)*";
                 
 //                check if item is a int/double
                 if(item.matches(isDouble))
                 {
+                		item = item.trim();
 //                        parse String to Double
                         double resultDouble = Double.valueOf(item).doubleValue();
                         return resultDouble;
